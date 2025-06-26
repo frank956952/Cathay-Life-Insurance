@@ -4,6 +4,22 @@
   --c-green-500: #22c55e;
   --c-gray-800: #1f2937;
 }
+.text-green-600.font-semibold.mb-2 {
+  font-size: 1.25rem;           /* text-xl */
+  line-height: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .text-green-600.font-semibold.mb-2 {
+    font-size: 1.5rem;          /* md:text-2xl */
+    line-height: 2rem;
+  }
+}
+
+
+
+
+
 
 /* --- universal wrappers --- */
 .section-wrapper {

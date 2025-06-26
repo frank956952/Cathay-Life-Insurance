@@ -2,7 +2,7 @@
 <html lang="zh-TW" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="vie wport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>國泰 Health+ 生態圈 | 深度互動策略藍圖</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="layout-overrides.css">
@@ -261,6 +261,44 @@
         </section>
 
         <!-- 6. Paradigm Shift -->
+
+        <section id="solution" class="min-h-screen py-20 px-8 flex flex-col justify-center items-center text-center">
+            <div class="fade-in">
+                <p class="text-green-600 font-semibold mb-2">範式轉移</p>
+                <h2 class="section-title">不只事後理賠，更是健康夥伴</h2>
+                <p class="section-subtitle mb-12">國泰 Health+ 透過高頻互動的 App，將保險從被動支付者，轉型為主動的健康生活引導者。</p>
+            </div>
+            <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center fade-in">
+                <div class="order-2 md:order-1 text-left space-y-6">
+                     <div id="solution-step-1" class="solution-step opacity-20 transition-opacity duration-500">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">生活即數據 (Live & Record)</h3>
+                        <p class="text-gray-600">透過穿戴裝置與手機，安全地記錄您的步數、睡眠與飲食，將抽象的健康化為具體的數據。</p>
+                    </div>
+                    <div id="solution-step-2" class="solution-step opacity-20 transition-opacity duration-500">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">獎勵健康行 (Reward)</h3>
+                        <p class="text-gray-600">每一個健康行為，都能轉化為有價的「小樹點」，讓您的努力得到實質回饋。</p>
+                    </div>
+                     <div id="solution-step-3" class="solution-step opacity-20 transition-opacity duration-500">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">正向循環 (Improve)</h3>
+                        <p class="text-gray-600">累積的點數可折抵保費或兌換商品，激勵您持續進步，形成健康、保障與獎勵的良性循環。</p>
+                    </div>
+                </div>
+                <div class="order-1 md:order-2 flex justify-center">
+                    <div class="phone w-full max-w-xs">
+                        <div class="phone-screen p-6 flex flex-col">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-2xl font-bold text-gray-800">Health+</h3>
+                                <div class="w-10 h-10 bg-green-200 rounded-full flex items-center justify-center text-green-700 font-bold">Cathay</div>
+                            </div>
+                            <div id="phone-content" class="flex-grow flex flex-col justify-center items-center text-center space-y-4">
+                                <!-- JS 會更新這裡的內容 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="paradigm-shift" class="section-wrapper">
             <div class="w-full max-w-5xl">
                  <div class="fade-in">
@@ -289,12 +327,12 @@
         <section id="app-flow" class="section-wrapper">
             <div class="w-full max-w-6xl">
                  <div class="fade-in">
-                    <p class="text-green-600 font-semibold mb-2">核心引擎</p>
+                    <p class="text-green-600 font-semibold mb-2 text-xl">核心引擎</p>
                     <h2 class="section-title">Health+ App：健康價值的轉換器</h2>
                     <p class="section-subtitle mb-12">透過我們的核心 App，用戶的每一個健康行為，都能被轉化為真實、有價的獎勵。</p>
                 </div>
-                 <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 items-center fade-in">
-                    <div class="order-2 md:order-1 text-center md:text-right space-y-6">
+                 <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-8 items-center fade-in">
+                    <div class="order-2 lg:order-1 text-center lg:text-right space-y-6">
                         <div class="step-card p-4 rounded-xl">
                             <h3 class="text-xl font-bold text-gray-800">1. 生活即數據</h3>
                             <p class="text-gray-600">安全地記錄您的步數、睡眠與飲食，將抽象的健康化為具體的數據。</p>
@@ -304,7 +342,10 @@
                             <p class="text-gray-600">系統將健康行為轉化為有價的「小樹點」，1點=1元。</p>
                         </div>
                     </div>
-                    <div class="order-1 md:order-2 flex justify-center">
+                    
+                    <!-- 新增第二個手機 -->
+                    <div class="order-1 lg:order-2 flex justify-center space-x-4">
+                        <!-- 主要手機 -->
                         <div class="phone w-full max-w-xs">
                             <div class="phone-screen p-4 flex flex-col">
                                 <div class="flex justify-between items-center p-2">
@@ -316,8 +357,73 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- 新的互動式手機 -->
+                        <div class="phone w-full max-w-xs">
+                            <div class="phone-screen p-4 flex flex-col">
+                                <div class="flex justify-between items-center p-2 mb-4">
+                                    <h3 class="text-lg font-bold text-gray-800">健康管理</h3>
+                                    <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</div>
+                                </div>
+                                
+                                <!-- 互動式內容區 -->
+                                <div id="interactive-phone-content" class="flex-grow space-y-3">
+                                    <!-- 步數追蹤 -->
+                                    <div class="bg-blue-50 rounded-lg p-3 cursor-pointer hover:bg-blue-100 transition-colors" onclick="updateInteractiveContent('steps')">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-2xl">👟</span>
+                                                <div>
+                                                    <p class="text-sm font-semibold text-gray-700">今日步數</p>
+                                                    <p class="text-xs text-gray-500" id="steps-count">8,543 步</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-green-600 font-bold text-sm">+3 點</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 睡眠追蹤 -->
+                                    <div class="bg-purple-50 rounded-lg p-3 cursor-pointer hover:bg-purple-100 transition-colors" onclick="updateInteractiveContent('sleep')">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-2xl">😴</span>
+                                                <div>
+                                                    <p class="text-sm font-semibold text-gray-700">睡眠品質</p>
+                                                    <p class="text-xs text-gray-500" id="sleep-hours">7小時 20分</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-green-600 font-bold text-sm">+2 點</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 飲食記錄 -->
+                                    <div class="bg-green-50 rounded-lg p-3 cursor-pointer hover:bg-green-100 transition-colors" onclick="updateInteractiveContent('nutrition')">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-2xl">🥗</span>
+                                                <div>
+                                                    <p class="text-sm font-semibold text-gray-700">營養均衡</p>
+                                                    <p class="text-xs text-gray-500" id="nutrition-score">均衡度 85%</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-green-600 font-bold text-sm">+4 點</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 總計小樹點 -->
+                                    <div class="bg-gradient-to-r from-green-100 to-teal-100 rounded-lg p-3 border-2 border-green-200">
+                                        <div class="text-center">
+                                            <p class="text-sm text-gray-600">今日獲得</p>
+                                            <p class="text-2xl font-bold text-green-600" id="total-points">9 小樹點</p>
+                                            <p class="text-xs text-gray-500">= NT$ 9</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="order-3 md:order-3 text-center md:text-left space-y-6">
+                    
+                    <div class="order-3 lg:order-3 text-center lg:text-left space-y-6">
                         <div class="step-card p-4 rounded-xl">
                             <h3 class="text-xl font-bold text-gray-800">3. 點數生態圈</h3>
                             <p class="text-gray-600">點數無縫接軌國泰生態圈，可用於折抵保費、兌換商品或公益捐贈。</p>
@@ -337,12 +443,14 @@
                 <div class="fade-in">
                     <p class="text-green-600 font-semibold mb-2">全球先例，在地創新</p>
                     <h2 class="section-title">借鑑頂尖，超越頂尖</h2>
-                    <p class="section-subtitle mb-12">我們並非從零開始，而是站在全球 InsurTech 巨人的肩膀上，並結合自身獨有優勢進行整合創新。</p>
+                    <p class="section-subtitle mb-12">數據驅動的健康激勵模式已在全球獲得驗證，我們站在巨人肩膀上，結合獨有優勢進行整合創新。</p>
                 </div>
-                <div class="w-full fade-in">
+                
+                <!-- 全球案例地圖 -->
+                <div class="w-full fade-in mb-12">
                     <div class="apple-card relative h-[60vh] md:h-[70vh]">
-                        <div id="map-container" class="w-full h-full bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400 overflow-hidden relative">
-                             <svg width="100%" height="100%" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" class="absolute inset-0">
+                        <div id="map-container" class="w-full h-full bg-gradient-to-br from-blue-50 to-green-50 rounded-2xl flex items-center justify-center overflow-hidden relative">
+                            <svg width="100%" height="100%" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" class="absolute inset-0">
                                 <defs>
                                     <filter id="glow">
                                         <feGaussianBlur stdDeviation="3.5" result="coloredBlur"></feGaussianBlur>
@@ -352,21 +460,122 @@
                                         </feMerge>
                                     </filter>
                                 </defs>
-                                <path d="M 250,175 C 450,100 550,100 750,200" stroke="#a5b4fc" stroke-width="2" fill="none" stroke-dasharray="5,5" />
-                                <path d="M 500,125 C 600,150 700,150 800,200" stroke="#c084fc" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                                <path d="M 250,175 C 450,100 550,100 750,200" stroke="#a5b4fc" stroke-width="3" fill="none" stroke-dasharray="8,5" opacity="0.7" />
+                                <path d="M 500,125 C 600,150 700,150 800,200" stroke="#c084fc" stroke-width="3" fill="none" stroke-dasharray="8,5" opacity="0.7" />
                             </svg>
+                            
+                            <!-- Oscar Health - 美國 -->
                             <div class="absolute" style="top: 35%; left: 20%;">
-                                <button data-company="oscar" class="map-dot bg-blue-500"></button>
+                                <button data-company="oscar" class="map-dot bg-blue-500 hover:bg-blue-600"></button>
+                                <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-medium text-blue-700">美國</div>
                             </div>
+                            
+                            <!-- Vitality - 全球 -->
                             <div class="absolute" style="top: 25%; left: 50%;">
-                                <button data-company="vitality" class="map-dot bg-purple-500"></button>
+                                <button data-company="vitality" class="map-dot bg-purple-500 hover:bg-purple-600"></button>
+                                <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-medium text-purple-700">全球</div>
                             </div>
+                            
+                            <!-- 國泰 - 台灣 -->
                             <div class="absolute" style="top: 40%; left: 80%;">
-                                <button data-company="cathay" class="map-dot bg-green-500 ring-4 ring-green-300" style="filter: url(#glow);"></button>
+                                <button data-company="cathay" class="map-dot bg-green-500 hover:bg-green-600 ring-4 ring-green-300 animate-pulse"></button>
+                                <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-medium text-green-700">台灣</div>
                             </div>
                         </div>
-                         <div id="map-info-box" class="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg opacity-0 transition-opacity duration-500">
-                            <!-- Info will be displayed here -->
+                        
+                        <div id="map-info-box" class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-lg opacity-0 transition-all duration-500">
+                            <!-- 詳細資訊將在此顯示 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 國泰獨特優勢比較 -->
+                <div class="w-full fade-in">
+                    <div class="apple-card">
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8">國泰模式：更宏大的整合創新</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <!-- Oscar Health -->
+                            <div class="bg-blue-50 rounded-2xl p-6 border border-blue-200">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                                    <h4 class="font-bold text-lg text-blue-700">Oscar Health</h4>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3">科技驅動型保險公司</p>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• 友善 App 介面</li>
+                                    <li>• 24/7 線上問診</li>
+                                    <li>• 健身追蹤獎勵</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Vitality -->
+                            <div class="bg-purple-50 rounded-2xl p-6 border border-purple-200">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
+                                    <h4 class="font-bold text-lg text-purple-700">Vitality</h4>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3">B2B 點數系統合作模式</p>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• 科學化點數機制</li>
+                                    <li>• 會員等級制度</li>
+                                    <li>• 多領域合作夥伴</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- 國泰 Health+ -->
+                            <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-300 relative">
+                                <div class="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">超越</div>
+                                <div class="flex items-center mb-4">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                                    <h4 class="font-bold text-lg text-green-700">國泰 Health+</h4>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-3">全流程整合生態系</p>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• 自有保險核心</li>
+                                    <li>• 既有小樹點生態</li>
+                                    <li>• 人機協同網絡</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- 三大核心優勢詳解 -->
+                        <div class="space-y-6">
+                            <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-xl p-6 border border-green-200">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">1</div>
+                                    <div class="flex-1">
+                                        <h4 class="text-xl font-bold text-gray-800 mb-2">自有保險核心深度綁定</h4>
+                                        <p class="text-gray-600">與 Vitality 的 B2B 合作模式不同，國泰直接將健康激勵機制融入自身保險業務核心，實現從數據收集、風險定價到理賠管理的全流程閉環，確保價值鏈的完整性與控制力。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-6 border border-blue-200">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">2</div>
+                                    <div class="flex-1">
+                                        <h4 class="text-xl font-bold text-gray-800 mb-2">既有生態圈賦能優勢</h4>
+                                        <p class="text-gray-600">國泰最獨特的競爭優勢：將健康獎勵機制直接嫁接到擁有廣大用戶基礎的「小樹點」生態系，實現價值的即時轉化與流通。這是從零開始的 InsurTech 公司難以比擬的先天優勢。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-purple-50 to-green-50 rounded-xl p-6 border border-purple-200">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">3</div>
+                                    <div class="flex-1">
+                                        <h4 class="text-xl font-bold text-gray-800 mb-2">人機協同服務網絡</h4>
+                                        <p class="text-gray-600">國泰並未拋棄龐大的業務員團隊，而是將他們轉型為「健康顧問」，打造結合數位效率與人性溫度的 Phygital 服務網絡，提供競爭者難以複製的差異化體驗。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 結論 -->
+                        <div class="mt-8 text-center bg-gray-100 rounded-xl p-6">
+                            <h4 class="text-xl font-bold text-gray-800 mb-3">借鑑成功，超越典範</h4>
+                            <p class="text-gray-600 max-w-4xl mx-auto">國泰 Health+ 不是簡單的模仿，而是在全球成功經驗基礎上，結合本土市場領導者的深厚根基，打造出更全面、更整合、更具防禦性的創新模式。</p>
                         </div>
                     </div>
                 </div>
@@ -572,6 +781,11 @@
             "vision": "最終願景",
         };
 
+
+
+
+
+        
         Object.keys(sectionTitles).forEach(id => {
             const dot = document.createElement('div');
             dot.classList.add('nav-dot');
@@ -760,26 +974,89 @@
             solutionInterval = setInterval(updatePhoneContent, 2000);
         }
         
+        
         function setupMapInteraction() {
             const dots = document.querySelectorAll('.map-dot');
             const infoBox = document.getElementById('map-info-box');
             const companyData = {
-                oscar: { name: 'Oscar Health (美國)', desc: '將自己定位為科技公司，透過友善介面、線上問診與健身獎勵，提升用戶體驗。', color: 'blue' },
-                vitality: { name: 'Vitality (全球)', desc: '開創科學化的點數系統，用戶透過健康活動升級會員，換取零售、航空等領域的折扣。', color: 'purple' },
-                cathay: { name: '國泰 Health+ (台灣)', desc: '<strong>在地化超越：</strong>整合自有保險核心、嫁接成熟的小樹點生態系、並賦能龐大的業務員網絡，打造「人機協同」的全面性模式。', color: 'green' },
+                oscar: { 
+                    name: 'Oscar Health (美國)', 
+                    desc: `<div class="text-left">
+                        <p class="text-gray-700 mb-3">徹底顛覆傳統保險用戶體驗，定位為以消費者為中心的科技公司。</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h5 class="font-semibold text-blue-600 mb-2">核心特色：</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 友善的 App 介面設計</li>
+                                    <li>• 免費 24/7 線上問診服務</li>
+                                    <li>• 整合健身追蹤器 (Misfit)</li>
+                                    <li>• 亞馬遜禮品卡實質獎勵</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-blue-600 mb-2">成功驗證：</h5>
+                                <p class="text-sm text-gray-600">科技與健康激勵融入保險能有效提升用戶黏著度並建立品牌差異化。</p>
+                            </div>
+                        </div>
+                    </div>`, 
+                    color: 'blue' 
+                },
+                vitality: { 
+                    name: 'Vitality (全球)', 
+                    desc: `<div class="text-left">
+                        <p class="text-gray-700 mb-3">開創以科學為基礎的健康促進計畫，核心是「Vitality 點數」系統。</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h5 class="font-semibold text-purple-600 mb-2">運作機制：</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 健康活動累積點數</li>
+                                    <li>• 銅級到鑽石級會員制</li>
+                                    <li>• 零售、航空、旅遊折扣</li>
+                                    <li>• 全球多領域合作夥伴</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-purple-600 mb-2">商業模式：</h5>
+                                <p class="text-sm text-gray-600">主要採 B2B 模式與各地保險公司合作，證明「點數換健康」能有效驅動行為改變。</p>
+                            </div>
+                        </div>
+                    </div>`, 
+                    color: 'purple' 
+                },
+                cathay: { 
+                    name: '國泰 Health+ (台灣)', 
+                    desc: `<div class="text-left">
+                        <p class="text-gray-700 mb-3"><strong>在地化整合創新：</strong>結合自身獨有優勢，打造更宏大的全流程生態系。</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <h5 class="font-semibold text-green-600 mb-2">自有保險核心</h5>
+                                <p class="text-xs text-gray-600">深度綁定保險業務，實現數據收集到理賠管理的全流程閉環。</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <h5 class="font-semibold text-blue-600 mb-2">既有生態圈</h5>
+                                <p class="text-xs text-gray-600">嫁接成熟的「小樹點」系統，實現價值即時轉化與流通。</p>
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded-lg">
+                                <h5 class="font-semibold text-purple-600 mb-2">人機協同</h5>
+                                <p class="text-xs text-gray-600">業務員轉型健康顧問，結合數位效率與人性溫度。</p>
+                            </div>
+                        </div>
+                    </div>`, 
+                    color: 'green' 
+                },
             };
 
             dots.forEach(dot => {
                 dot.addEventListener('click', () => {
                     const company = dot.dataset.company;
                     const data = companyData[company];
-                    infoBox.innerHTML = `<h4 class="font-bold text-lg text-${data.color}-600">${data.name}</h4><p class="text-gray-700 mt-1">${data.desc}</p>`;
+                    infoBox.innerHTML = `<h4 class="font-bold text-lg text-${data.color}-600 mb-3">${data.name}</h4>${data.desc}`;
                     infoBox.style.opacity = '1';
                     dots.forEach(d => d.classList.remove('ring-4', 'ring-offset-2', 'ring-blue-500', 'ring-purple-500', 'ring-green-500'));
                     dot.classList.add('ring-4', 'ring-offset-2', `ring-${data.color}-500`);
                 });
             });
-            // Trigger default
+            // 預設顯示國泰資訊
             document.querySelector('.map-dot[data-company="cathay"]').click();
         }
 
