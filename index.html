@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式報告：台灣壽險業的轉型風暴</title>
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A thematic, dashboard-style SPA. The structure begins with a central interactive diagram of the "Transformation Trilemma" (Demographics, Regulation, Technology) in the hero section, allowing users to immediately grasp the core thesis and navigate to corresponding detailed sections. This non-linear approach is more engaging than a simple report-to-webpage conversion. The application flows from the macro challenges (The Perfect Storm), to a deep dive into the key consumer segment (Gen Z), a case study of a market leader's response (The Leader's Game), and finally to actionable future strategies (The Path Forward). This structure is designed to guide the user from problem identification to solution exploration, making a complex report digestible and actionable. Key interactions include dynamic counters, interactive charts, clickable cards for progressive disclosure, and hover-to-reveal tooltips, all aimed at maximizing user engagement and understanding. -->
+    <!-- Visualization & Content Choices: 
+        - Population Trend (Line Chart, Chart.js): Goal: Show change. Interaction: Hover for details. Justification: Standard for time-series data.
+        - Gen Z Spending/Intent (Donut Charts, Chart.js): Goal: Show proportions/highlight a key stat. Interaction: Hover/Click. Justification: Visually appealing and effective for part-to-whole relationships.
+        - Trilemma/Flywheel Diagrams (HTML/CSS): Goal: Organize concepts/processes. Interaction: Click to navigate/hover for info. Justification: Creates engaging, custom visuals without images/SVG.
+        - IFRS 17 Comparison (JS Toggle): Goal: Compare states. Interaction: Click. Justification: More interactive than a static table.
+        - Gen Z Deconstruction (Clickable Cards): Goal: Organize dense info. Interaction: Click to reveal. Justification: Uses progressive disclosure to prevent overwhelming the user.
+        - All choices adhere to the no SVG/Mermaid constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FAF8F5;
+            color: #333333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link:hover {
+            color: #1a8a7e;
+        }
+        .active-link {
+            color: #4DB6AC;
+            border-bottom: 2px solid #4DB6AC;
+        }
+        .trilemma-node {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .trilemma-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .flywheel-segment {
+            transition: background-color 0.3s;
+        }
+        .flywheel-segment:hover {
+            background-color: #e0f2f1;
+        }
+        .pill-button {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .pill-button.active {
+            background-color: #4DB6AC;
+            color: white;
+        }
+        .card-flip {
+            perspective: 1000px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-flip.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: white;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: #e0f2f1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="navbar" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-gray-800">台灣壽險業轉型分析</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#challenges" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">三大挑戰</a>
+                        <a href="#gen-z" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">新世代消費者</a>
+                        <a href="#leader-game" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">龍頭的賽局</a>
+                        <a href="#strategy" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700">未來策略</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">駕馭轉型三元悖論</h2>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">一份解析台灣人壽保險業於法規、世代與科技顛覆時代下的互動式策略報告。</p>
+                <div class="mt-12">
+                    <p class="text-gray-700 font-medium mb-6">點擊下方任一驅動力，開始探索產業面臨的關鍵挑戰。</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8">
+                        <div class="relative flex items-center justify-center w-full md:w-auto">
+                           <a href="#challenges" data-scroll-target="demographics" class="trilemma-node cursor-pointer bg-white shadow-lg rounded-full w-48 h-48 flex flex-col items-center justify-center text-center p-4 border-2 border-amber-300">
+                                <span class="text-5xl mb-2">👵📉</span>
+                                <h3 class="font-bold text-amber-700">人口結構</h3>
+                                <p class="text-xs text-amber-600">高齡化與少子化的雙重壓力</p>
+                            </a>
+                        </div>
+                        <div class="relative flex items-center justify-center w-full md:w-auto">
+                            <a href="#challenges" data-scroll-target="regulation" class="trilemma-node cursor-pointer bg-white shadow-lg rounded-full w-48 h-48 flex flex-col items-center justify-center text-center p-4 border-2 border-sky-300">
+                                <span class="text-5xl mb-2">📜⚖️</span>
+                                <h3 class="font-bold text-sky-700">監理法規</h3>
+                                <p class="text-xs text-sky-600">IFRS 17 & ICS 2.0的強制轉型</p>
+                            </a>
+                        </div>
+                         <div class="relative flex items-center justify-center w-full md:w-auto">
+                            <a href="#challenges" data-scroll-target="technology" class="trilemma-node cursor-pointer bg-white shadow-lg rounded-full w-48 h-48 flex flex-col items-center justify-center text-center p-4 border-2 border-teal-300">
+                                <span class="text-5xl mb-2">🤖🔗</span>
+                                <h3 class="font-bold text-teal-700">金融科技</h3>
+                                <p class="text-xs text-teal-600">來自四面八方的跨界競爭</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenges" class="py-16 sm:py-24 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">正在匯集的完美風暴</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">台灣壽險業正同時面臨三股強大的結構性力量衝擊。它們並非獨立事件，而是相互關聯、彼此加劇的單一整合性範式轉移，共同定義了產業的現在與未來。</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div id="demographics" class="bg-white p-6 rounded-lg shadow-md border-t-4 border-amber-400">
+                        <h3 class="text-2xl font-bold text-amber-800 mb-4">1. 人口海嘯</h3>
+                        <p class="text-gray-600 mb-6">台灣正加速邁入超高齡社會，伴隨而來的「長壽」與「不健康」風險，引爆了對長照與退休規劃的龐大需求。然而，工作人口的萎縮卻削弱了傳統保費的增長基礎，形成嚴峻的供需反差。</p>
+                        <div class="space-y-4 mb-6 text-center">
+                            <div>
+                                <p class="text-4xl font-bold text-amber-600" data-counter="8.4" data-suffix=" 年">0</p>
+                                <p class="text-sm text-gray-500">不健康餘命</p>
+                            </div>
+                             <div>
+                                <p class="text-4xl font-bold text-amber-600" data-counter="1.3" data-suffix=" 人">0</p>
+                                <p class="text-sm text-gray-500">2050年扶老比 (工作人口扶養1名長者)</p>
+                            </div>
+                        </div>
+                        <div class="chart-container"><canvas id="populationChart"></canvas></div>
+                        <p class="text-xs text-center text-gray-500 mt-2">資料來源：國家發展委員會</p>
+                    </div>
+
+                    <div id="regulation" class="bg-white p-6 rounded-lg shadow-md border-t-4 border-sky-400">
+                        <h3 class="text-2xl font-bold text-sky-800 mb-4">2. 監理重置</h3>
+                        <p class="text-gray-600 mb-6">2026年接軌的IFRS 17與ICS 2.0，是對現行商業模式的「管制性拆除」。它將徹底終結依賴儲蓄險衝高保費的模式，強制產業回歸「保障核心」，無法適應者將面臨獲利與資本的雙重打擊。</p>
+                        <div id="ifrs-comparison" class="bg-sky-50 p-4 rounded-lg">
+                            <div class="flex justify-center mb-4 bg-white rounded-full p-1 shadow-inner">
+                                <button data-ifrs-view="old" class="pill-button active w-1/2 py-2 text-sm font-medium rounded-full">現行制度 (IFRS 4)</button>
+                                <button data-ifrs-view="new" class="pill-button w-1/2 py-2 text-sm font-medium rounded-full">新制度 (IFRS 17)</button>
+                            </div>
+                            <div id="ifrs-content">
+                                <div data-ifrs-content="old">
+                                    <ul class="space-y-2 text-sm list-disc list-inside">
+                                        <li><strong class="text-sky-700">負債評價：</strong>以「鎖定利率」衡量</li>
+                                        <li><strong class="text-sky-700">利潤認列：</strong>保費收取時即認列，利潤前期化</li>
+                                        <li><strong class="text-sky-700">有利產品：</strong>高保費、高儲蓄成分儲蓄險</li>
+                                    </ul>
+                                </div>
+                                <div data-ifrs-content="new" class="hidden">
+                                     <ul class="space-y-2 text-sm list-disc list-inside">
+                                        <li><strong class="text-sky-700">負債評價：</strong>以「公允價值」衡量</li>
+                                        <li><strong class="text-sky-700">利潤認列：</strong>鎖入CSM，於服務期間逐期認列</li>
+                                        <li><strong class="text-sky-700">有利產品：</strong>高保障型、投資型、利變型商品</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-center mt-4 text-gray-600">點擊切換，了解新舊制度對經營策略的核心影響。</p>
+                    </div>
+                    
+                    <div id="technology" class="bg-white p-6 rounded-lg shadow-md border-t-4 border-teal-400">
+                        <h3 class="text-2xl font-bold text-teal-800 mb-4">3. 科技顛覆</h3>
+                        <p class="text-gray-600 mb-6">傳統保險業的護城河正被侵蝕。金融科技(InsurTech)新創、科技巨頭正挾其技術與數據優勢，切入價值鏈，帶來跨界競爭壓力，同時也為內部轉型提供了核心驅動力。</p>
+                         <div class="relative mt-8 h-64 flex items-center justify-center">
+                            <div class="absolute w-32 h-32 bg-teal-500 text-white rounded-full flex items-center justify-center text-center p-2 shadow-xl">傳統<br>保險業</div>
+                            <div class="absolute text-sm text-center transform -translate-x-32 -translate-y-16 bg-white p-2 rounded-lg shadow">
+                                <span class="text-2xl">⚡️</span> InsurTech 新創
+                            </div>
+                            <div class="absolute text-sm text-center transform translate-x-32 -translate-y-16 bg-white p-2 rounded-lg shadow">
+                               <span class="text-2xl">☁️</span> 科技巨頭
+                            </div>
+                            <div class="absolute text-sm text-center transform -translate-x-24 translate-y-20 bg-white p-2 rounded-lg shadow">
+                                <span class="text-2xl">🛒</span> 電商平台
+                            </div>
+                             <div class="absolute text-sm text-center transform translate-x-28 translate-y-20 bg-white p-2 rounded-lg shadow">
+                                <span class="text-2xl">📱</span> 數位銀行
+                            </div>
+                        </div>
+                        <p class="text-sm text-center mt-4 text-gray-600">未來的競爭，將是多維度的跨界賽局。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="gen-z" class="py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Z世代的難題：解碼新保險消費者</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Z世代是數位原住民，他們的價值觀與決策模式正顛覆傳統銷售邏輯。理解他們對保險的矛盾心態，是贏得未來的關鍵。</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-center mb-4">矛盾的現象：高意願 vs 低參與</h3>
+                        <p class="text-sm text-gray-600 text-center mb-6">Z世代並非沒有風險意識，但其高昂的投保意願，卻未轉化為實際購買。經濟壓力與產品設計的「格格不入」是主要原因。</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="text-center">
+                                <h4 class="font-semibold mb-2">財務優先序</h4>
+                                <div class="chart-container h-48 sm:h-56"><canvas id="spendingChart"></canvas></div>
+                                <p class="text-xs text-gray-500 mt-2">理財支出僅佔 5%</p>
+                            </div>
+                             <div class="text-center">
+                                <h4 class="font-semibold mb-2">潛在需求</h4>
+                                <div class="chart-container h-48 sm:h-56"><canvas id="intentChart"></canvas></div>
+                                <p class="text-xs text-gray-500 mt-2">年輕族群想再買保險的意願</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                         <h3 class="text-xl font-bold text-center mb-4">如何贏得他們的信任？</h3>
+                         <p class="text-sm text-gray-600 text-center mb-6">點擊下方卡片，了解Z世代的行為特徵，以及保險業者應如何應對。</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="card-flip h-40" data-card="gen-z-1">
+                                <div class="card-inner">
+                                    <div class="card-front"><span class="text-3xl">💹</span><p class="font-bold mt-2">投資風格</p></div>
+                                    <div class="card-back"><p class="text-sm text-center"><strong>應對：</strong>開發更透明、模組化、具備數位互動性的產品，提供類似投資APP的自主掌控感。</p></div>
+                                </div>
+                            </div>
+                            <div class="card-flip h-40" data-card="gen-z-2">
+                                <div class="card-inner">
+                                    <div class="card-front"><span class="text-3xl">🤝</span><p class="font-bold mt-2">資訊來源</p></div>
+                                    <div class="card-back"><p class="text-sm text-center"><strong>應對：</strong>轉向內容行銷與社群經營，與微網紅合作，創造真實、有價值的內容。</p></div>
+                                </div>
+                            </div>
+                            <div class="card-flip h-40" data-card="gen-z-3">
+                                <div class="card-inner">
+                                    <div class="card-front"><span class="text-3xl">📱</span><p class="font-bold mt-2">數位習慣</p></div>
+                                    <div class="card-back"><p class="text-sm text-center"><strong>應對：</strong>溝通必須簡潔、視覺化、行動優先。提供無縫的APP數位服務旅程。</p></div>
+                                </div>
+                            </div>
+                            <div class="card-flip h-40" data-card="gen-z-4">
+                                <div class="card-inner">
+                                    <div class="card-front"><span class="text-3xl">🌍</span><p class="font-bold mt-2">核心價值</p></div>
+                                    <div class="card-back"><p class="text-sm text-center"><strong>應對：</strong>將ESG融入產品與營運，以透明真實的方式溝通，贏得價值認同。</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="leader-game" class="py-16 sm:py-24 bg-gray-50">
+            <div class="container mx-auto px-4">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">龍頭的賽局：國泰人壽的轉型劇本</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">面對挑戰，市場領導者如何應對？以國泰人壽為例，其策略核心是打造一個由數據驅動的「戰略飛輪」，將挑戰轉化為協同的解決方案。</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center mb-8">數據驅動的健康生態圈飛輪</h3>
+                    <div class="relative w-full h-80 sm:h-96 flex items-center justify-center">
+                         <div class="absolute animate-spin-slow" style="width: 90%; height: 90%; border: 3px dashed #4DB6AC; border-radius: 50%;"></div>
+                        <div class="absolute text-center p-4 rounded-full bg-teal-100 flywheel-segment" style="transform: translate(0, -110%);">
+                            <p class="text-5xl">🏃</p><p class="font-bold text-teal-800">活躍用戶</p>
+                        </div>
+                        <div class="absolute text-center p-4 rounded-full bg-teal-100 flywheel-segment" style="transform: rotate(90deg) translate(0, -110%) rotate(-90deg);">
+                            <p class="text-5xl">📈</p><p class="font-bold text-teal-800">健康數據</p>
+                        </div>
+                        <div class="absolute text-center p-4 rounded-full bg-teal-100 flywheel-segment" style="transform: rotate(180deg) translate(0, -110%) rotate(-180deg);">
+                            <p class="text-5xl">🎁</p><p class="font-bold text-teal-800">個人化產品</p>
+                        </div>
+                        <div class="absolute text-center p-4 rounded-full bg-teal-100 flywheel-segment" style="transform: rotate(270deg) translate(0, -110%) rotate(-270deg);">
+                            <p class="text-5xl">🤝</p><p class="font-bold text-teal-800">價值共創</p>
+                        </div>
+                        <div class="absolute w-24 h-24 bg-teal-600 text-white rounded-full flex items-center justify-center shadow-2xl">
+                           <p class="text-5xl">💡</p>
+                        </div>
+                    </div>
+                     <p class="text-sm text-center mt-8 text-gray-600">更多活躍用戶產生更精準數據，以開發更具競爭力的產品，進而吸引更多用戶，形成正向循環。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">致勝路徑圖：新世代的四大基石</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">綜合所有分析，未來成功的保險商業模式，必須建立在四大基石之上，這是一條不可迴避的轉型路徑。</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg text-center shadow-sm hover:shadow-xl transition-shadow duration-300">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-100 text-teal-600 text-4xl">🛡️</div>
+                        <h3 class="mt-6 text-xl font-bold">保障為本</h3>
+                        <p class="mt-2 text-gray-600">將商業模式的核心從「吸納儲蓄」回歸「提供保障」，利潤來源是卓越的核保與風險管理能力。</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg text-center shadow-sm hover:shadow-xl transition-shadow duration-300">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-sky-100 text-sky-600 text-4xl">🎯</div>
+                        <h3 class="mt-6 text-xl font-bold">個人化驅動</h3>
+                        <p class="mt-2 text-gray-600">利用數據與AI，從粗略客群進化到深度個人化，在人生每個關鍵時刻提供最適合的產品。</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg text-center shadow-sm hover:shadow-xl transition-shadow duration-300">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-amber-600 text-4xl">❤️‍🩹</div>
+                        <h3 class="mt-6 text-xl font-bold">預防先行</h3>
+                        <p class="mt-2 text-gray-600">從被動的「理賠支付者」轉變為主動的「健康管理者」，將價值鏈從「事後」延伸至「事前」。</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg text-center shadow-sm hover:shadow-xl transition-shadow duration-300">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 text-indigo-600 text-4xl">🌐</div>
+                        <h3 class="mt-6 text-xl font-bold">平台化整合</h3>
+                        <p class="mt-2 text-gray-600">將服務無縫整合到客戶的數位生活中，成為串聯健康、醫療、理財等多方服務的賦能節點。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto py-6 px-4 text-center text-sm">
+            <p>&copy; 2025 互動式策略報告. All rights reserved.</p>
+            <p class="text-gray-400 mt-1">本內容根據指定分析報告生成，僅供研究與展示用途。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const populationData = {
+                labels: ['2024', '2050', '2070'],
+                datasets: [
+                    {
+                        label: '工作年齡人口 (百萬)',
+                        data: [16.2, 11.2, 8.0],
+                        borderColor: '#fbbf24',
+                        backgroundColor: '#fde68a',
+                        fill: true,
+                        tension: 0.1
+                    },
+                    {
+                        label: '65歲以上人口佔比 (%)',
+                        data: [19.2, 38.9, 46.5],
+                        borderColor: '#f87171',
+                        backgroundColor: '#fecaca',
+                        fill: true,
+                        tension: 0.1
+                    }
+                ]
+            };
+
+            const spendingData = {
+                labels: ['飲食 (35%)', '娛樂 (30%)', '理財 (5%)', '其他 (30%)'],
+                datasets: [{
+                    data: [35, 30, 5, 30],
+                    backgroundColor: ['#F5B041', '#60A5FA', '#4DB6AC', '#E5E7EB'],
+                    hoverBackgroundColor: ['#FBBF24', '#3B82F6', '#14B8A6', '#D1D5DB']
+                }]
+            };
+
+            const intentData = {
+                labels: ['想再買保險 (82.2%)', '不想 (17.8%)'],
+                datasets: [{
+                    data: [82.2, 17.8],
+                    backgroundColor: ['#4DB6AC', '#E5E7EB'],
+                    hoverBackgroundColor: ['#14B8A6', '#D1D5DB']
+                }]
+            };
+
+            const chartOptions = (title) => ({
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 10 }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: title,
+                        font: { size: 14 }
+                    }
+                }
+            });
+            
+            new Chart(document.getElementById('populationChart'), {
+                type: 'line',
+                data: populationData,
+                options: chartOptions('台灣人口結構趨勢預測')
+            });
+            
+            new Chart(document.getElementById('spendingChart'), {
+                type: 'doughnut',
+                data: spendingData,
+                options: chartOptions('Z世代消費支出')
+            });
+
+            new Chart(document.getElementById('intentChart'), {
+                type: 'doughnut',
+                data: intentData,
+                options: chartOptions('Z世代投保意願')
+            });
+
+            const ifrsButtons = document.querySelectorAll('[data-ifrs-view]');
+            const ifrsContents = document.querySelectorAll('[data-ifrs-content]');
+            ifrsButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const view = button.dataset.ifrsView;
+                    ifrsButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    ifrsContents.forEach(content => {
+                        if (content.dataset.ifrsContent === view) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const genZCards = document.querySelectorAll('.card-flip');
+            genZCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('is-flipped');
+                });
+            });
+            
+            const counters = document.querySelectorAll('[data-counter]');
+            const speed = 200;
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const updateCount = () => {
+                            const target = +counter.dataset.counter;
+                            const suffix = counter.dataset.suffix || '';
+                            const count = +counter.innerText.replace(suffix, '');
+                            const inc = target / speed;
+                            if (count < target) {
+                                let newCount = count + inc;
+                                if (target.toString().includes('.')) {
+                                    counter.innerText = newCount.toFixed(1) + suffix;
+                                } else {
+                                    counter.innerText = Math.ceil(newCount) + suffix;
+                                }
+                                setTimeout(updateCount, 1);
+                            } else {
+                                counter.innerText = target + suffix;
+                            }
+                        };
+                        updateCount();
+                        observer.unobserve(counter);
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(counter => observer.observe(counter));
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - document.getElementById('navbar').offsetHeight,
+                            behavior: 'smooth'
+                        });
+
+                        const scrollTargetId = this.dataset.scrollTarget;
+                        if(scrollTargetId){
+                            const elementToHighlight = document.getElementById(scrollTargetId);
+                            if(elementToHighlight) {
+                                elementToHighlight.style.transition = 'all 0.3s ease-in-out';
+                                elementToHighlight.style.boxShadow = '0 0 20px rgba(77, 182, 172, 0.7)';
+                                setTimeout(() => {
+                                    elementToHighlight.style.boxShadow = '';
+                                }, 1500);
+                            }
+                        }
+                    }
+                });
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            const navHeight = document.getElementById('navbar').offsetHeight;
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - navHeight - 50;
+                    if (pageYOffset >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active-link');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active-link');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
