@@ -1,0 +1,126 @@
+/* Layout fix overrides for 2.html – converts @apply directives to plain CSS so the page works without a Tailwind build step */
+
+:root {
+  --c-green-500: #22c55e;
+  --c-gray-800: #1f2937;
+}
+
+/* --- universal wrappers --- */
+.section-wrapper {
+  min-height: 100vh;            /* min-h-screen */
+  width: 100%;                  /* w-full */
+  padding: 6rem 1rem;           /* py-24 px-4 */
+  display: flex;                /* flex */
+  flex-direction: column;       /* flex-col */
+  justify-content: center;      /* justify-center */
+  align-items: center;          /* items-center */
+  text-align: center;           /* text-center */
+  overflow: hidden;             /* overflow-hidden */
+}
+@media (min-width: 640px) {     /* sm */
+  .section-wrapper {
+    padding-left: 2rem;         /* sm:px-8 */
+    padding-right: 2rem;
+  }
+}
+
+.section-content {
+  width: 100%;                  /* w-full */
+  max-width: 80rem;             /* max-w-7xl (1280px) */
+}
+
+/* --- typography helpers --- */
+.section-title {
+  margin-bottom: 1rem;          /* mb-4 */
+  font-weight: 700;             /* font-bold */
+  color: var(--c-gray-800);     /* text-gray-800 */
+  letter-spacing: -0.025em;     /* tracking-tight */
+  font-size: 2.25rem;           /* text-4xl */
+  line-height: 2.5rem;
+}
+@media (min-width: 768px) {     /* md */
+  .section-title {
+    font-size: 3rem;            /* md:text-5xl */
+    line-height: 1;
+  }
+}
+@media (min-width: 1024px) {    /* lg */
+  .section-title {
+    font-size: 3.75rem;         /* lg:text-6xl */
+  }
+}
+
+.section-subtitle {
+  font-size: 1.125rem;          /* text-lg */
+  line-height: 1.75rem;
+  color: #6b7280;               /* text-gray-500 */
+  max-width: 48rem;             /* max-w-3xl */
+  margin: 0 auto;               /* mx-auto */
+}
+@media (min-width: 768px) {
+  .section-subtitle {
+    font-size: 1.25rem;         /* md:text-xl */
+  }
+}
+
+/* --- card & surface --- */
+.apple-card {
+  background-color: rgba(255, 255, 255, 0.6);   /* bg-white/60 */
+  backdrop-filter: blur(20px);                   /* backdrop-blur-xl */
+  border-radius: 1.5rem;                         /* rounded-3xl */
+  padding: 2rem;                                 /* p-8 */
+  width: 100%;
+  border: 1px solid rgba(226, 232, 240, 0.8);    /* border-slate-200/80 */
+  box-shadow: 0 25px 50px -12px rgba(100, 116, 139, 0.5); /* shadow-2xl */
+  transition: all 0.3s;
+}
+@media (min-width: 768px) {
+  .apple-card {
+    padding: 3rem;                               /* md:p-12 */
+  }
+}
+
+/* --- navigation dots --- */
+.nav-dot {
+  width: 0.625rem;              /* w-2.5 */
+  height: 0.625rem;             /* h-2.5 */
+  border-radius: 9999px;        /* rounded-full */
+  background-color: #cbd5e1;    /* bg-slate-300 */
+  transition: all 0.3s;
+  cursor: pointer;              /* cursor-pointer */
+}
+
+.nav-dot:hover {
+  background-color: #4ade80;    /* hover:bg-green-400 */
+}
+
+.nav-dot.active {
+  background-color: #16a34a;    /* bg-green-600 */
+  transform: scale(1.5);        /* scale-150 */
+}
+
+/* --- tab buttons --- */
+.tab-button {
+  padding: 0.5rem 1rem;         /* px-4 py-2 */
+  font-size: 1rem;              /* text-base */
+  font-weight: 500;             /* font-medium */
+  border-radius: 9999px;        /* rounded-full */
+  transition: all 0.3s;
+  white-space: nowrap;          /* whitespace-nowrap */
+}
+@media (min-width: 768px) {
+  .tab-button {
+    padding: 0.75rem 1.5rem;    /* md:px-6 md:py-3 */
+    font-size: 1.125rem;        /* md:text-lg */
+  }
+}
+
+.tab-button.active {
+  background-color: #16a34a;    /* bg-green-600 */
+  color: #ffffff;               /* text-white */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* shadow-md */
+}
+
+.tab-button:focus {
+  outline: none;                /* remove default focus ring for safari */
+}

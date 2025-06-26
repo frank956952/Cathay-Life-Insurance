@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>國泰 Health+ 生態圈 | 深度互動策略藍圖</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="layout-overrides.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene Tech -->
+    <!-- Application Structure Plan: 採用單頁滾動式敘事結構，引導評審逐步深入計畫核心。從宏觀社會問題（急迫性）開始，接著展示保險業困境，然後優雅地引出 Health+ 解決方案。透過互動式App模擬與多方效益分析，清晰傳達計畫價值。最後以人機協同策略和未來願景作結。此結構旨在建立情感共鳴與邏輯說服力，比傳統簡報分頁更具沉浸感和故事性，符合Apple風格的敘事體驗。 -->
+    <!-- Visualization & Content Choices: 
+        - 台灣高齡化趨勢 -> 目標: 建立急迫性 -> 視覺化: 動態折線圖 (Chart.js) -> 理由: 清晰呈現數據趨勢的嚴重性。
+        - 保險惡性循環 -> 目標: 解釋核心商業痛點 -> 視覺化: CSS動畫圖解 -> 理由: 將複雜概念簡化為易懂的視覺故事。
+        - Health+ App 功能 -> 目標: 展示核心產品 -> 視覺化: 互動式手機模型 -> 理由: 讓評審能模擬操作，直觀感受產品流程。
+        - 多方共贏效益 -> 目標: 闡述價值主張 -> 視覺化: 互動分頁+甜甜圈圖/長條圖 (Chart.js) -> 理由: 讓評審可依角色自選探索，數據呈現更清晰。
+        - 良性循環 -> 目標: 強化計畫的永續性 -> 視覺化: 全螢幕循環動畫圖 -> 理由: 以強烈視覺印象總結計畫的系統性優勢。
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- <style>
+        :root {
+            --c-green-500: #22c55e;
+            --c-gray-800: #1f2937;
+        }        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f9fafb;
+            color: var(--c-gray-800);
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            width: 100vw;
+            height: 100vh;
+            zoom: 1;
+            transform: scale(1);
+            transform-origin: 0 0;
+        }        * {
+            box-sizing: border-box;
+        }
+        html {
+            zoom: 1;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        .section-wrapper {
+             @apply min-h-screen py-20 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col justify-center items-center text-center;
+        }
+        .section-title {
+            @apply text-4xl md:text-5xl font-bold text-gray-800 mb-4 tracking-tight;
+        }
+        .section-subtitle {
+            @apply text-lg md:text-xl text-gray-500 max-w-3xl mx-auto;
+        }
+        .apple-card {
+            @apply bg-white/70 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-xl transition-all duration-300 w-full;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .nav-dot {
+            @apply w-2.5 h-2.5 rounded-full bg-gray-300 transition-all duration-300 cursor-pointer hover:bg-green-400;
+        }
+        .nav-dot.active {
+            @apply bg-green-600 scale-150;
+        }
+        .phone {
+            background: #111;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        .phone-screen {
+            background: #f9fafb;
+            border-radius: 30px;
+            overflow: hidden;
+            aspect-ratio: 9 / 19.5;
+            position: relative;
+        }
+        .tab-button {
+            @apply px-4 py-2 md:px-6 md:py-3 text-base md:text-lg font-medium rounded-full transition-all duration-300 whitespace-nowrap;
+        }
+        .tab-button.active {
+            @apply bg-green-600 text-white shadow-md;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 45vh;
+        }
+        .map-dot {
+            @apply w-6 h-6 rounded-full shadow-lg transform transition-all duration-300 hover:scale-125 cursor-pointer;
+        }
+        .data-node {
+            @apply p-4 bg-gray-100 rounded-lg text-center cursor-pointer border-2 border-transparent transition-all;
+        }
+        .data-node.active {
+            @apply border-green-500 bg-green-50 shadow-lg;
+        }
+        .data-arrow {
+            @apply text-2xl text-gray-400 mx-2 hidden md:block;
+        }
+        .plan-phase {
+            @apply p-4 text-center cursor-pointer border-b-4 border-transparent transition-all;
+        }
+        .plan-phase:not(.opacity-50) {
+            @apply border-green-500;
+        }
+        .moat-pillar {
+            @apply flex flex-col items-center text-center p-2 transition-transform duration-300 hover:scale-105;
+        }
+        .step-card {
+            @apply transition-all duration-300;
+        }         @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        
+        /* 確保主要內容不被遮擋 */
+        /* main {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        
+        @media (min-width: 640px) {
+            main {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            main {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        } */
+    </style> -->
+</head>
+<body>    <nav id="side-nav" class="fixed top-1/2 right-2 md:right-6 -translate-y-1/2 z-50 flex flex-col items-center space-y-4">
+        <!-- Dots will be generated here -->
+    </nav>
+
+    <main>
+        <!-- 1. Intro -->        <section id="intro" class="section-wrapper h-screen">
+            <div class="absolute inset-0 bg-grid-gray-200/[0.6] [mask-image:radial-gradient(ellipse_at_center,white,transparent_80%)]"></div>
+            <div class="relative z-10 fade-in">
+                <h1 class="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-500 mb-4">國泰 Health+ 生態圈</h1>
+                <p class="text-xl md:text-2xl text-gray-600">一份迎向未來的健康永續提案</p>
+                <div class="mt-12 text-gray-500 animate-bounce">
+                    <span class="text-sm">向下捲動以探索</span>
+                    <svg class="w-6 h-6 mx-auto mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. The Aging Crisis -->
+        <section id="aging-crisis" class="section-wrapper">
+            <div class="w-full max-w-5xl">
+                <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">無法迴避的未來</p>
+                    <h2 class="section-title">台灣正快速駛向超高齡社會</h2>
+                    <p class="section-subtitle mb-12">這不只是數字，而是對社會結構、醫療體系與每個家庭的深刻衝擊。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="apple-card">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">高齡人口與扶養比的雙重壓力</h3>
+                        <p class="text-gray-600 mb-6">2025年，台灣將進入超高齡社會，屆時每五位國民中就有一位是長者。</p>
+                        <div class="chart-container"><canvas id="agingChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 3. Unhealthy Life Expectancy -->
+        <section id="unhealthy-expectancy" class="section-wrapper">
+            <div class="w-full max-w-4xl">
+                <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">更深層的挑戰</p>
+                    <h2 class="section-title">「不健康餘命」的危機</h2>
+                    <p class="section-subtitle mb-12">長壽值得慶賀，但如果增加的歲月充滿病痛與失能，它將成為個人與社會的沉重代價。</p>
+                </div>
+                <div class="w-full fade-in">
+                     <div class="apple-card">
+                         <h3 class="text-2xl font-bold text-gray-800 mb-2">活得久，但不一定活得好</h3>
+                         <p class="text-gray-600 mb-6">台灣民眾平均有長達8年的時間處於需要照護的狀態，這期間的醫療與照護成本極為高昂。</p>
+                         <div id="life-expectancy-vis" class="w-full h-24 bg-gray-200 rounded-full overflow-hidden flex items-center pl-4 text-sm md:text-lg">
+                             <div id="healthy-years" class="h-full bg-gradient-to-r from-green-400 to-teal-400 transition-all duration-1000 flex items-center justify-center text-white font-bold" style="width: 0%;">健康餘命</div>
+                             <div id="unhealthy-years" class="h-full bg-red-400 transition-all duration-1000 flex items-center justify-center text-white font-bold" style="width: 0%;">不健康</div>
+                         </div>
+                         <div class="mt-6 text-center">
+                             <p class="text-gray-600 text-lg">預估長期照護總成本：</p>
+                             <p class="text-4xl font-bold text-red-600" id="care-cost">NT$ 0</p>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Young Generation's Dilemma -->
+        <section id="youth-dilemma" class="section-wrapper">
+            <div class="w-full max-w-5xl">
+                <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">年輕世代的兩難</p>
+                    <h2 class="section-title">渴望保障，卻無力負擔</h2>
+                    <p class="section-subtitle mb-12">研究顯示，年輕人並非不關心未來，而是被傳統保險的高牆所阻擋。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="apple-card">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="text-left">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-4">強烈意願 vs. 有限能力</h3>
+                                <p class="text-gray-600 mb-4">20-29歲族群對未來的不安全感高，獨立意識強，因此購買長照險的「意願」反而是所有年齡層中最高的。</p>
+                                <p class="text-gray-600">然而，剛入職場的他們，收入相對較低，經濟尚未穩定，導致購買「能力」嚴重不足。這種意願與能力之間的巨大落差，是保險業必須正視的核心缺口。</p>
+                            </div>
+                            <div class="chart-container"><canvas id="youthChart"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. The Vicious Cycle -->
+        <section id="vicious-cycle" class="section-wrapper">
+            <div class="w-full max-w-4xl">
+                 <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">壓力下的體系</p>
+                    <h2 class="section-title">傳統保險的惡性循環</h2>
+                    <p class="section-subtitle mb-12">當年輕的活水無法流入，風險池逐漸乾涸，傳統保險的社會契約正悄然崩解。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="apple-card flex flex-col md:flex-row items-center justify-around gap-8">
+                        <div class="w-full md:w-1/2 space-y-4">
+                            <h3 class="text-2xl font-bold text-gray-800">風險池的失衡</h3>
+                            <p class="text-gray-600">一個無法吸引低風險年輕人、只剩下高風險族群的保險制度，注定走向不可持續的未來。</p>
+                        </div>
+                        <div id="cycle-animation" class="w-full md:w-1/2 h-64 flex flex-col items-center justify-center space-y-4 relative">
+                            <div class="flex items-end justify-center w-full h-24">
+                                <div id="pool-old" class="h-12 w-16 bg-red-300 rounded-t-lg flex items-center justify-center transition-all duration-1000">🧓</div>
+                                <div id="pool-young" class="h-12 w-16 bg-green-300 rounded-t-lg flex items-center justify-center transition-all duration-1000">🧑</div>
+                            </div>
+                            <div class="w-48 h-2 bg-gray-300 rounded-full"></div>
+                            <p id="cycle-text" class="text-lg font-semibold text-gray-700 transition-opacity duration-500">一個平衡的風險池</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Paradigm Shift -->
+        <section id="paradigm-shift" class="section-wrapper">
+            <div class="w-full max-w-5xl">
+                 <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">範式轉移</p>
+                    <h2 class="section-title">從支付者，到健康夥伴</h2>
+                    <p class="section-subtitle mb-12">國泰 Health+ 提出全新價值主張：我們不只在您生病時提供保障，更在您健康時給予獎勵。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="apple-card grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div class="p-6 border-2 border-red-200 rounded-2xl text-center">
+                            <h3 class="text-2xl font-bold text-red-500 mb-4">傳統保險</h3>
+                            <p class="text-gray-600 mb-6">低頻互動、事後理賠的被動模式。</p>
+                            <div id="traditional-path" class="text-xl font-mono text-red-400">簽約 ┅┅┅＞ 理賠</div>
+                        </div>
+                        <div class="p-6 border-2 border-green-300 bg-green-50 rounded-2xl text-center">
+                             <h3 class="text-2xl font-bold text-green-600 mb-4">國泰 Health+</h3>
+                             <p class="text-gray-600 mb-6">高頻互動、事前預防的主動夥伴關係。</p>
+                             <div id="healthplus-path" class="text-xl font-mono text-green-500">Live → Record → Reward → Improve ↺</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Core Engine: The App -->
+        <section id="app-flow" class="section-wrapper">
+            <div class="w-full max-w-6xl">
+                 <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">核心引擎</p>
+                    <h2 class="section-title">Health+ App：健康價值的轉換器</h2>
+                    <p class="section-subtitle mb-12">透過我們的核心 App，用戶的每一個健康行為，都能被轉化為真實、有價的獎勵。</p>
+                </div>
+                 <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-8 items-center fade-in">
+                    <div class="order-2 md:order-1 text-center md:text-right space-y-6">
+                        <div class="step-card p-4 rounded-xl">
+                            <h3 class="text-xl font-bold text-gray-800">1. 生活即數據</h3>
+                            <p class="text-gray-600">安全地記錄您的步數、睡眠與飲食，將抽象的健康化為具體的數據。</p>
+                        </div>
+                         <div class="step-card p-4 rounded-xl">
+                            <h3 class="text-xl font-bold text-gray-800">2. 健康變貨幣</h3>
+                            <p class="text-gray-600">系統將健康行為轉化為有價的「小樹點」，1點=1元。</p>
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2 flex justify-center">
+                        <div class="phone w-full max-w-xs">
+                            <div class="phone-screen p-4 flex flex-col">
+                                <div class="flex justify-between items-center p-2">
+                                    <h3 class="text-xl font-bold text-gray-800">Health+</h3>
+                                    <div class="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center text-green-700 font-bold text-sm">Cathay</div>
+                                </div>
+                                <div id="phone-content" class="flex-grow flex flex-col justify-center items-center text-center space-y-2 p-2">
+                                    <!-- JS will update this -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-3 md:order-3 text-center md:text-left space-y-6">
+                        <div class="step-card p-4 rounded-xl">
+                            <h3 class="text-xl font-bold text-gray-800">3. 點數生態圈</h3>
+                            <p class="text-gray-600">點數無縫接軌國泰生態圈，可用於折抵保費、兌換商品或公益捐贈。</p>
+                        </div>
+                         <div class="step-card p-4 rounded-xl">
+                            <h3 class="text-xl font-bold text-gray-800">4. 啟動良性循環</h3>
+                            <p class="text-gray-600">您的健康，為您帶來獎勵，也讓保障更可負擔，形成正向循環。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 8. Global Precedents -->
+        <section id="global-precedents" class="section-wrapper">
+            <div class="w-full max-w-6xl">
+                <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">全球先例，在地創新</p>
+                    <h2 class="section-title">借鑑頂尖，超越頂尖</h2>
+                    <p class="section-subtitle mb-12">我們並非從零開始，而是站在全球 InsurTech 巨人的肩膀上，並結合自身獨有優勢進行整合創新。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="apple-card relative h-[60vh] md:h-[70vh]">
+                        <div id="map-container" class="w-full h-full bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400 overflow-hidden relative">
+                             <svg width="100%" height="100%" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" class="absolute inset-0">
+                                <defs>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="3.5" result="coloredBlur"></feGaussianBlur>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"></feMergeNode>
+                                            <feMergeNode in="SourceGraphic"></feMergeNode>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                <path d="M 250,175 C 450,100 550,100 750,200" stroke="#a5b4fc" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                                <path d="M 500,125 C 600,150 700,150 800,200" stroke="#c084fc" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                            </svg>
+                            <div class="absolute" style="top: 35%; left: 20%;">
+                                <button data-company="oscar" class="map-dot bg-blue-500"></button>
+                            </div>
+                            <div class="absolute" style="top: 25%; left: 50%;">
+                                <button data-company="vitality" class="map-dot bg-purple-500"></button>
+                            </div>
+                            <div class="absolute" style="top: 40%; left: 80%;">
+                                <button data-company="cathay" class="map-dot bg-green-500 ring-4 ring-green-300" style="filter: url(#glow);"></button>
+                            </div>
+                        </div>
+                         <div id="map-info-box" class="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg opacity-0 transition-opacity duration-500">
+                            <!-- Info will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 9. Win-Win-Win Benefits -->
+        <section id="benefits" class="section-wrapper">
+            <div class="w-full max-w-5xl">
+                <div class="fade-in">
+                     <p class="text-green-600 font-semibold mb-2">良性循環</p>
+                    <h2 class="section-title">創造用戶、國泰與社會的三贏局面</h2>
+                    <p class="section-subtitle mb-12">一個平衡的生態系，為所有參與者創造可持續的價值。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="flex justify-center mb-8">
+                        <div id="tabs" class="bg-gray-200 rounded-full p-1.5 flex space-x-2 overflow-x-auto">
+                            <button data-tab="user" class="tab-button active">為您 (用戶)</button>
+                            <button data-tab="cathay" class="tab-button">為國泰</button>
+                            <button data-tab="society" class="tab-button">為社會</button>
+                        </div>
+                    </div>
+                    <div id="tab-content" class="apple-card min-h-[400px]">
+                        <!-- JS 會更新這裡的內容 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 10. Agent Transformation -->
+        <section id="agents" class="section-wrapper">
+            <div class="w-full max-w-6xl">
+                <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">人性的連結</p>
+                    <h2 class="section-title">業務員轉型：從銷售到健康顧問</h2>
+                    <p class="section-subtitle mb-12">科技並非取代人力，而是賦能人力。我們打造了「人機協同」的服務新模式，提供有溫度的數位體驗。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="apple-card grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div class="text-left">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-4">顧問的數位工具箱</h3>
+                            <p class="text-gray-600 mb-6">我們為業務員打造專屬儀表板，讓他們能以數據為基礎，提供更專業、高效且個人化的關懷與服務。</p>
+                            <ul class="space-y-4 text-gray-700">
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-3 mt-1 text-xl">✓</span>
+                                    <div><strong class="font-semibold">客戶參與度總覽：</strong>在保護隱私下，了解客戶活躍度，提供適時關懷。</div>
+                                </li>
+                                 <li class="flex items-start">
+                                    <span class="text-green-500 mr-3 mt-1 text-xl">✓</span>
+                                    <div><strong class="font-semibold">自動化溝通：</strong>設定關懷觸發器，高效維護客戶關係。</div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-3 mt-1 text-xl">✓</span>
+                                    <div><strong class="font-semibold">個人化保單模擬器：</strong>將健康行為的價值具象化，讓客戶看見努力的回報。</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="agent-dashboard" class="bg-gray-100 rounded-2xl p-6 shadow-inner cursor-pointer" title="點擊互動">
+                             <h4 class="font-bold text-lg mb-4 text-gray-700">顧問儀表板 (點擊互動)</h4>
+                             <div id="dashboard-content" class="space-y-4 min-h-[150px]">
+                                <!-- JS will populate this -->
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. Data Governance -->
+        <section id="data-governance" class="section-wrapper">
+            <div class="w-full max-w-5xl">
+                 <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">信任的基石</p>
+                    <h2 class="section-title">對數據治理的極致承諾</h2>
+                    <p class="section-subtitle mb-12">信任是我們最珍貴的資產。我們承諾以超越法規的最高標準，守護您的每一筆資料。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="apple-card">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6">互動式數據流圖</h3>
+                        <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-2">
+                            <div id="data-user" class="data-node active w-full md:w-auto">📱 <br>用戶裝置</div>
+                            <div class="data-arrow">→</div>
+                            <div id="data-cloud" class="data-node w-full md:w-auto">☁️ <br>加密雲端</div>
+                            <div class="data-arrow">→</div>
+                            <div id="data-anon" class="data-node w-full md:w-auto">👤 <br>匿名化處理</div>
+                             <div class="data-arrow">→</div>
+                            <div id="data-analysis" class="data-node w-full md:w-auto">📊 <br>群體分析</div>
+                        </div>
+                        <div id="data-explanation" class="mt-8 p-4 bg-gray-100 rounded-lg min-h-[80px] text-left">
+                            <!-- Explanation here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 12. Execution Plan -->
+        <section id="execution-plan" class="section-wrapper">
+            <div class="w-full max-w-6xl">
+                 <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">務實的執行</p>
+                    <h2 class="section-title">分階段推行與變革管理</h2>
+                    <p class="section-subtitle mb-12">宏大的願景，需要務實的執行路徑。我們已規劃清晰的藍圖，確保計畫穩健落地。</p>
+                </div>
+                <div class="w-full fade-in">
+                     <div class="apple-card">
+                        <div class="flex flex-col md:flex-row justify-around">
+                            <div id="plan-phase1" class="plan-phase flex-1">
+                                <h3 class="text-xl font-bold">第一階段：試點</h3><span class="text-sm text-gray-500">1-6個月</span>
+                            </div>
+                            <div id="plan-phase2" class="plan-phase flex-1 opacity-50">
+                                <h3 class="text-xl font-bold">第二階段：擴展</h3><span class="text-sm text-gray-500">7-18個月</span>
+                            </div>
+                            <div id="plan-phase3" class="plan-phase flex-1 opacity-50">
+                                <h3 class="text-xl font-bold">第三階段：全面推廣</h3><span class="text-sm text-gray-500">19個月後</span>
+                            </div>
+                        </div>
+                        <div id="plan-details" class="mt-8 p-6 bg-gray-50 rounded-xl min-h-[200px] text-left">
+                           <!-- Plan details here -->
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 13. Competitive Moat -->
+        <section id="competitive-moat" class="section-wrapper">
+            <div class="w-full max-w-5xl">
+                 <div class="fade-in">
+                    <p class="text-green-600 font-semibold mb-2">競爭的護城河</p>
+                    <h2 class="section-title">為何國泰終將勝出？</h2>
+                    <p class="section-subtitle mb-12">我們的優勢並非單點創新，而是將核心能力系統性整合，創造出競爭者難以複製的綜效。</p>
+                </div>
+                <div class="w-full fade-in">
+                    <div class="apple-card text-center">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-8">四大支柱，穩固我們的領導地位</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                            <div class="moat-pillar">
+                                <div class="text-5xl mb-2">🏦</div><p>品牌信任<br>& 規模經濟</p>
+                            </div>
+                            <div class="moat-pillar">
+                                 <div class="text-5xl mb-2">🌳</div><p>整合生態系<br>(含小樹點)</p>
+                            </div>
+                            <div class="moat-pillar">
+                                <div class="text-5xl mb-2">🤝</div><p>科技賦能的<br>業務員網絡</p>
+                            </div>
+                            <div class="moat-pillar">
+                                 <div class="text-5xl mb-2">💰</div><p>資本實力<br>& 長期承諾</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 14. Vision & CTA -->
+        <section id="vision" class="section-wrapper h-screen bg-gray-800 text-white">
+            <div class="fade-in">
+                <p class="text-green-400 font-semibold mb-2">我們的願景</p>
+                <h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight">啟動良性循環</h2>
+            </div>
+            <div id="final-cycle" class="w-full max-w-3xl h-80 relative flex items-center justify-center fade-in my-8">
+                <!-- JS 會在這裡創建循環動畫 -->
+            </div>
+            <div class="fade-in">
+                 <h3 class="text-2xl font-bold max-w-2xl mx-auto">誠摯邀請您，與我們共同投資一個更健康、更公平、更永續的台灣。</h3>
+            </div>
+        </section>
+
+    </main>    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 重置縮放設置
+        if (document.body.style.zoom) {
+            document.body.style.zoom = '1';
+        }
+        if (document.body.style.transform) {
+            document.body.style.transform = 'none';
+        }
+        
+        // 確保視窗正確顯示
+        window.scrollTo(0, 0);
+    
+        const chartInstances = {};
+
+        const sections = document.querySelectorAll('section');
+        const navContainer = document.getElementById('side-nav');
+        
+        const sectionTitles = {
+            "intro": "開場",
+            "aging-crisis": "高齡化危機",
+            "unhealthy-expectancy": "不健康餘命",
+            "youth-dilemma": "年輕世代的兩難",
+            "vicious-cycle": "惡性循環",
+            "paradigm-shift": "範式轉移",
+            "app-flow": "App 核心流程",
+            "global-precedents": "全球先例",
+            "benefits": "多方共贏",
+            "agents": "業務員轉型",
+            "data-governance": "數據治理",
+            "execution-plan": "執行計畫",
+            "competitive-moat": "競爭護城河",
+            "vision": "最終願景",
+        };
+
+        Object.keys(sectionTitles).forEach(id => {
+            const dot = document.createElement('div');
+            dot.classList.add('nav-dot');
+            dot.dataset.section = id;
+            dot.setAttribute('title', sectionTitles[id]);
+            dot.addEventListener('click', () => {
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+            navContainer.appendChild(dot);
+        });
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.4
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    const animatedElement = entry.target.querySelector('.fade-in') || entry.target;
+                    animatedElement.classList.add('is-visible');
+                    
+                    document.querySelectorAll('#side-nav .nav-dot').forEach(d => d.classList.remove('active'));
+                    const activeDot = navContainer.querySelector(`[data-section="${id}"]`);
+                    if(activeDot) activeDot.classList.add('active');
+
+                    if (!entry.target.dataset.rendered) {
+                        runAnimationForSection(id);
+                        entry.target.dataset.rendered = true;
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(el => observer.observe(el));
+        
+        function destroyChart(id) {
+            if (chartInstances[id]) {
+                chartInstances[id].destroy();
+                delete chartInstances[id];
+            }
+        }
+
+        function runAnimationForSection(id) {
+            switch(id) {
+                case 'aging-crisis': renderAgingChart(); break;
+                case 'unhealthy-expectancy': startLifeExpectancyAnimation(); break;
+                case 'youth-dilemma': renderYouthChart(); break;
+                case 'vicious-cycle': startCycleAnimation(); break;
+                case 'app-flow': startSolutionAnimation(); break;
+                case 'global-precedents': setupMapInteraction(); break;
+                case 'benefits': switchTab('user'); break;
+                case 'agents': setupAgentDashboard(); break;
+                case 'data-governance': setupDataFlowInteraction(); break;
+                case 'execution-plan': setupPlanInteraction(); break;
+                case 'vision': renderFinalCycle(); break;
+            }
+        }
+        
+        function renderAgingChart() {
+            destroyChart('agingChart');
+            const ctx = document.getElementById('agingChart')?.getContext('2d');
+            if(!ctx) return;
+            chartInstances['agingChart'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2018', '2025', '2030', '2040', '2050'],
+                    datasets: [{
+                        label: '高齡人口比例 (%)', data: [14.1, 20.8, 25.5, 34.3, 38.9],
+                        borderColor: 'rgb(22, 163, 74)', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.4,
+                    }, {
+                        label: '青壯年扶養長者數 (每位)', data: [0.16, 0.29, 0.40, 0.65, 0.81],
+                        borderColor: 'rgb(239, 68, 68)', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.4, yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: '高齡人口比例 (%)' } },
+                        y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: '扶養比' } }
+                    },
+                    plugins: { legend: { position: 'bottom' } },
+                     animation: { duration: 1500, easing: 'easeInOutQuad' }
+                }
+            });
+        }
+        
+        function startLifeExpectancyAnimation() {
+            const healthyBar = document.getElementById('healthy-years');
+            const unhealthyBar = document.getElementById('unhealthy-years');
+            const costCounter = document.getElementById('care-cost');
+            
+            setTimeout(() => {
+                healthyBar.style.width = '90%'; // ~72 years
+                unhealthyBar.style.width = '10%'; // ~8 years
+            }, 300);
+
+            let start = 0;
+            const end = 4800000; // 預估照護成本
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                if (elapsedTime > duration) {
+                    costCounter.textContent = 'NT$ ' + end.toLocaleString();
+                    return;
+                }
+                const progress = elapsedTime / duration;
+                const currentCost = Math.floor(progress * end);
+                costCounter.textContent = 'NT$ ' + currentCost.toLocaleString();
+                requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function renderYouthChart() {
+            destroyChart('youthChart');
+            const ctx = document.getElementById('youthChart')?.getContext('2d');
+            if(!ctx) return;
+            chartInstances['youthChart'] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['20-29歲', '30-39歲', '40-49歲', '50歲以上'],
+                    datasets: [{
+                        label: '購買意願', data: [85, 75, 60, 50],
+                        backgroundColor: 'rgba(5, 150, 105, 0.7)',
+                    }, {
+                        label: '購買能力 (相對)', data: [30, 60, 80, 70],
+                        backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, max: 100, ticks: { callback: (value) => value + '%' } } },
+                    plugins: { legend: { position: 'bottom' }, title: { display: true, text: '年輕族群購買意願 vs. 購買能力' } },
+                    animation: { duration: 1500, easing: 'easeInOutQuad' }
+                }
+            });
+        }
+
+        function startCycleAnimation(){
+            const poolOld = document.getElementById('pool-old');
+            const poolYoung = document.getElementById('pool-young');
+            const cycleText = document.getElementById('cycle-text');
+
+            setTimeout(() => { cycleText.textContent = '高齡、高風險用戶增加...'; cycleText.classList.add('text-red-500'); poolOld.style.height = '6rem'; }, 1000);
+            setTimeout(() => { cycleText.textContent = '導致保費上漲...'; cycleText.classList.replace('text-red-500', 'text-yellow-500'); }, 2500);
+            setTimeout(() => { cycleText.textContent = '健康的年輕人被勸退...'; cycleText.classList.replace('text-yellow-500', 'text-blue-500'); poolYoung.style.height = '1.5rem'; }, 4000);
+            setTimeout(() => { cycleText.textContent = '風險池失衡，陷入惡性循環。'; cycleText.classList.replace('text-blue-500', 'text-red-700'); poolOld.style.height = '7rem'; poolYoung.style.height = '1rem'; }, 5500);
+        }
+
+        let solutionInterval;
+        function startSolutionAnimation() {
+            if (solutionInterval) clearInterval(solutionInterval);
+            const phoneContentEl = document.getElementById('phone-content');
+            const stepCards = document.querySelectorAll('.step-card');
+            
+            const contents = [
+                { icon: '🏃‍♂️', title: '記錄步數', text: '12,532 步', step: 0 },
+                { icon: '🛌', title: '監測睡眠', text: '7小時 45分', step: 0 },
+                { icon: '🌳', title: '賺取小樹點', text: '+ 5 點', step: 1 },
+                { icon: '🛍️', title: '兌換獎勵', text: '咖啡、購物金', step: 2 },
+                { icon: '�', title: '折抵保費', text: '下期保費 - NT$ 50', step: 3 },
+            ];
+            let currentIndex = 0;
+            
+            function updatePhoneContent() {
+                const content = contents[currentIndex % contents.length];
+                stepCards.forEach((card, index) => {
+                    card.classList.toggle('bg-green-100', index === content.step);
+                    card.classList.toggle('shadow-lg', index === content.step);
+                    card.classList.toggle('scale-105', index === content.step);
+
+                });
+                phoneContentEl.innerHTML = `
+                    <div class="text-5xl mb-2">${content.icon}</div>
+                    <h4 class="text-lg font-bold text-gray-800">${content.title}</h4>
+                    <p class="text-2xl font-bold text-green-600">${content.text}</p>
+                `;
+                currentIndex++;
+            }
+            updatePhoneContent();
+            solutionInterval = setInterval(updatePhoneContent, 2000);
+        }
+        
+        function setupMapInteraction() {
+            const dots = document.querySelectorAll('.map-dot');
+            const infoBox = document.getElementById('map-info-box');
+            const companyData = {
+                oscar: { name: 'Oscar Health (美國)', desc: '將自己定位為科技公司，透過友善介面、線上問診與健身獎勵，提升用戶體驗。', color: 'blue' },
+                vitality: { name: 'Vitality (全球)', desc: '開創科學化的點數系統，用戶透過健康活動升級會員，換取零售、航空等領域的折扣。', color: 'purple' },
+                cathay: { name: '國泰 Health+ (台灣)', desc: '<strong>在地化超越：</strong>整合自有保險核心、嫁接成熟的小樹點生態系、並賦能龐大的業務員網絡，打造「人機協同」的全面性模式。', color: 'green' },
+            };
+
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const company = dot.dataset.company;
+                    const data = companyData[company];
+                    infoBox.innerHTML = `<h4 class="font-bold text-lg text-${data.color}-600">${data.name}</h4><p class="text-gray-700 mt-1">${data.desc}</p>`;
+                    infoBox.style.opacity = '1';
+                    dots.forEach(d => d.classList.remove('ring-4', 'ring-offset-2', 'ring-blue-500', 'ring-purple-500', 'ring-green-500'));
+                    dot.classList.add('ring-4', 'ring-offset-2', `ring-${data.color}-500`);
+                });
+            });
+            // Trigger default
+            document.querySelector('.map-dot[data-company="cathay"]').click();
+        }
+
+        const tabs = document.getElementById('tabs');
+        const tabContent = document.getElementById('tab-content');
+        const tabData = {
+            user: { content: `<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="text-left space-y-4">
+                            <div class="benefit-card">
+                                <h4 class="font-bold text-lg">賺取你的折扣</h4>
+                                <p class="text-gray-600">解決年輕族群「價格敏感」痛點，透過健康行為賺取「小樹點」，直接折抵保費，保險不再是負擔。</p>
+                            </div>
+                             <div class="benefit-card">
+                                <h4 class="font-bold text-lg">健康化為即時獎勵</h4>
+                                <p class="text-gray-600">點數可兌換加油、購物金等，讓您的健康努力更有價值，滿足「即時回饋」的心理需求。</p>
+                            </div>
+                             <div class="benefit-card">
+                                <h4 class="font-bold text-lg">發揮利他影響力</h4>
+                                <p class="text-gray-600">可將點數捐贈給弱勢群體，購買微型保險，滿足年輕世代對「社會責任」的追求。</p>
+                            </div>
+                        </div>
+                        <div class="chart-container h-72 md:h-80"><canvas id="userBenefitChart"></canvas></div>
+                    </div>` },
+            cathay: { content: `<div class="text-left"><h3 class="text-xl md:text-2xl font-bold text-center mb-6">關鍵保險指標預期影響</h3>
+                <div class="overflow-x-auto"><table class="w-full text-sm text-left">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100"><tr>
+                    <th class="px-4 py-3">指標</th><th class="px-4 py-3">預期表現</th><th class="px-4 py-3">理由</th>
+                </tr></thead><tbody>
+                <tr class="border-b"><td class="px-4 py-4 font-medium">客戶獲取成本 (CAC)</td><td class="px-4 py-4 text-green-600 font-bold">降低 15-25%</td><td class="px-4 py-4">創新模式吸引年輕族群，降低行銷成本。</td></tr>
+                <tr class="border-b"><td class="px-4 py-4 font-medium">客戶終身價值 (LTV)</td><td class="px-4 py-4 text-green-600 font-bold">提升 20-30%</td><td class="px-4 py-4">高頻互動提升客戶黏著度與忠誠度。</td></tr>
+                <tr class="border-b"><td class="px-4 py-4 font-medium">理賠損失率</td><td class="px-4 py-4 text-green-600 font-bold">降低 5-15%</td><td class="px-4 py-4">更健康的保戶群體直接降低理賠風險。</td></tr>
+                </tbody></table></div></div>` },
+            society: { content: `<div class="text-center space-y-4">
+                       <h4 class="font-bold text-2xl text-gray-800">減輕健保財政負擔</h4>
+                       <p class="text-gray-600 max-w-2xl mx-auto">當國民更健康，對公共醫療資源的依賴便會降低。這是一個由市場驅動，創造巨大社會價值的公私協力典範。</p>
+                        <div class="pt-6">
+                            <label for="adoption-rate" class="block mb-2 font-medium text-gray-700">Health+ 採納率模擬</label>
+                            <input id="adoption-rate" type="range" min="0" max="100" value="10" class="w-full max-w-md h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="mt-4 flex items-center justify-center space-x-4">
+                               <span class="text-3xl">🏥</span><div class="w-48 bg-gray-200 rounded-full h-4"><div id="burden-bar" class="bg-red-500 h-4 rounded-full transition-all duration-300" style="width: 90%;"></div></div>
+                               <span id="burden-text" class="font-bold text-red-500">健保負擔：高</span>
+                            </div></div></div>` }
+        };
+
+        function switchTab(tabName) {
+            tabs.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+            tabs.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            tabContent.innerHTML = tabData[tabName].content;
+            
+            if (tabName === 'user') renderUserBenefitChart();
+            if (tabName === 'society') setupSocietySlider();
+        }
+        tabs.addEventListener('click', e => { if (e.target.tagName === 'BUTTON') { switchTab(e.target.dataset.tab); } });
+        
+        function renderUserBenefitChart() {
+            destroyChart('userBenefitChart');
+            setTimeout(() => {
+                const ctx = document.getElementById('userBenefitChart')?.getContext('2d');
+                if (!ctx) return;
+                chartInstances['userBenefitChart'] = new Chart(ctx, {
+                    type: 'doughnut', data: { labels: ['保費折抵', '消費兌換', '公益捐贈'], datasets: [{ data: [50, 40, 10], backgroundColor: ['rgb(22, 163, 74)', 'rgb(5, 150, 105)', 'rgb(13, 148, 136)'], hoverOffset: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, title:{display:true, text:'小樹點價值分配'} }, animation: { animateScale: true, animateRotate: true, duration: 1200 } }
+                });
+            }, 100);
+        }
+
+        function setupSocietySlider() {
+            const slider = document.getElementById('adoption-rate');
+            const bar = document.getElementById('burden-bar');
+            const text = document.getElementById('burden-text');
+            if (!slider || !bar || !text) return;
+            
+            slider.addEventListener('input', (e) => {
+                const value = e.target.value;
+                const burden = 100 - value * 0.7;
+                bar.style.width = `${burden}%`;
+                if (burden < 50) {
+                    bar.className = 'bg-green-500 h-4 rounded-full transition-all duration-300';
+                    text.className = 'font-bold text-green-500';
+                    text.textContent = '健保負擔：低';
+                } else if (burden < 80) {
+                    bar.className = 'bg-yellow-500 h-4 rounded-full transition-all duration-300';
+                    text.className = 'font-bold text-yellow-500';
+                    text.textContent = '健保負擔：中';
+                } else {
+                    bar.className = 'bg-red-500 h-4 rounded-full transition-all duration-300';
+                    text.className = 'font-bold text-red-500';
+                    text.textContent = '健保負擔：高';
+                }
+            });
+        }
+        
+        function setupAgentDashboard() {
+            const container = document.getElementById('dashboard-content');
+            const views = [
+                { title: '客戶活躍度', content: `<div class="w-full bg-gray-200 rounded-full h-4 mt-2"><div class="bg-green-500 h-4 rounded-full" style="width: 80%"></div></div><p class="text-right text-sm text-gray-600 mt-1">80% 已啟用App</p>`},
+                { title: '本週挑戰達成', content: `<p class="text-3xl font-bold text-gray-800">15 <span class="text-base font-normal text-gray-500">位客戶</span></p>`},
+                { title: '待關懷客戶 (超過一個月未同步)', content: `<p class="text-3xl font-bold text-gray-800">5 <span class="text-base font-normal text-gray-500">位客戶</span></p>`}
+            ];
+            let currentView = 0;
+            function updateView() {
+                container.innerHTML = `<div class="bg-white p-4 rounded-lg"><p class="text-sm text-gray-500">${views[currentView].title}</p>${views[currentView].content}</div>`;
+                currentView = (currentView + 1) % views.length;
+            }
+            document.getElementById('agent-dashboard').addEventListener('click', updateView);
+            updateView();
+        }
+
+        function setupDataFlowInteraction() {
+            const nodes = document.querySelectorAll('.data-node');
+            const explanationBox = document.getElementById('data-explanation');
+            const explanations = {
+                'data-user': '用戶透過 App 與穿戴裝置產生健康數據，所有數據在傳輸前均在裝置端加密。',
+                'data-cloud': '加密後的數據傳輸至符合國際頂尖安全標準的雲端伺服器儲存。',
+                'data-anon': '數據在用於分析前，會經過嚴格的去識別化與匿名化處理，移除所有個人可識別資訊。',
+                'data-analysis': '只有匿名化、群體化的數據會被用於精算模型分析，以優化產品與定價，絕無個資洩漏風險。'
+            };
+            nodes.forEach(node => {
+                node.addEventListener('click', () => {
+                    nodes.forEach(n => n.classList.remove('active'));
+                    node.classList.add('active');
+                    explanationBox.textContent = explanations[node.id];
+                });
+            });
+            document.getElementById('data-user').click();
+        }
+
+        function setupPlanInteraction() {
+            const phases = document.querySelectorAll('.plan-phase');
+            const detailsBox = document.getElementById('plan-details');
+            const details = {
+                'plan-phase1': { title: '第一階段：試點 (1-6個月)', content: `<strong>目標：</strong>驗證產品核心功能與價值主張，測試業務員轉型模式。<br><strong>對象：</strong>2-3個分公司、約100位「冠軍業務員」、5,000名早期用戶。<br><strong>成功指標：</strong>App下載率 > 80%、用戶月活躍度 (MAU) > 50%。`},
+                'plan-phase2': { title: '第二階段：擴展 (7-18個月)', content: `<strong>目標：</strong>根據反饋優化產品，擴大業務員培訓，拓展合作夥伴。<br><strong>對象：</strong>擴展至30%的業務員團隊，目標10萬活躍用戶。<br><strong>成功指標：</strong>CAC穩定下降、用戶留存率達標、簽署3-5家新夥伴。`},
+                'plan-phase3': { title: '第三階段：全面推廣 (19個月後)', content: `<strong>目標：</strong>將 Health+ 作為核心產品全面推廣，深化數據合作。<br><strong>對象：</strong>全體業務員，目標市場滲透率5%。<br><strong>成功指標：</strong>保險資金池健康度顯著提升、理賠損失率下降。`}
+            };
+            phases.forEach(phase => {
+                phase.addEventListener('click', () => {
+                    phases.forEach(p => p.classList.add('opacity-50'));
+                    phase.classList.remove('opacity-50');
+                    detailsBox.innerHTML = `<h4 class="font-bold mb-2">${details[phase.id].title}</h4><p class="text-gray-600">${details[phase.id].content}</p>`;
+                });
+            });
+            document.getElementById('plan-phase1').click();
+        }
+
+        function renderFinalCycle() {
+            const container = document.getElementById('final-cycle');
+            if (container.children.length > 0) return;
+            const items = [
+                { text: '更健康的用戶', icon: '❤️' }, { text: '國泰風險降低', icon: '🛡️' }, { text: '政府負擔減輕', icon: '🏥' },
+                { text: '用戶回饋更佳', icon: '💰' }, { text: '吸引更多用戶', icon: '👥' },
+            ];
+            items.forEach((item, i) => {
+                const angle = (i / items.length) * 2 * Math.PI - (Math.PI / 2);
+                const x = 140 * Math.cos(angle);
+                const y = 100 * Math.sin(angle);
+                const node = document.createElement('div');
+                node.className = 'absolute flex flex-col items-center transition-all duration-700 opacity-0';
+                node.style.transform = `translate(${x}px, ${y}px) scale(0.8)`;
+                node.innerHTML = `<div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-3xl mb-2">${item.icon}</div>
+                                  <p class="text-sm font-medium text-center">${item.text}</p>`;
+                container.appendChild(node);
+                setTimeout(() => { node.style.opacity = '1'; node.style.transform = `translate(${x}px, ${y}px) scale(1)`; }, i * 300);
+            });
+        }
+    });
+    </script>
+</body>
+</html>
