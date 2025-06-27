@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國泰 Health+ Mandate: 互動式報告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Harmony (主要背景: #FDFBF8 柔和米白, 主色調: #005F52 國泰綠, 強調色: #D4AF37 淡金, 文字: #333333 深灰) -->
+    <!-- Application Structure Plan: 採用非線性的主題式儀表板結構，而非報告的章節順序。頂部設有固定導覽列，讓使用者能快速跳轉至「危機現況」、「核心解方」、「價值主張」、「永續循環」、「實踐藍圖」五大核心區塊。此結構能讓使用者依自身興趣自由探索，從宏觀的社會痛點，到具體的解決方案及其深遠影響，打造一個從「為何做」到「如何做」再到「價值何在」的完整認知路徑，比線性閱讀更能強化說服力與記憶點。 -->
+    <!-- Visualization & Content Choices: 
+        1. 台灣危機 -> 目標: 傳達急迫性 -> 方法: 數據卡片 + 互動折線圖(Chart.js) + HTML/CSS流程圖 -> 互動: 滑鼠懸停顯示數據，點擊流程圖節點 -> 理由: 數據可視化比純文字更有衝擊力，互動性能引導使用者主動探索問題的嚴重性。
+        2. 核心解方 -> 目標: 解釋產品機制 -> 方法: HTML/CSS 模擬App介面 + 點擊互動卡片 -> 互動: 點擊App功能卡片顯示詳細說明 -> 理由: 具象化的App介面讓概念更易懂，互動卡片能分層次呈現資訊，避免資訊過載。
+        3. 價值主張 -> 目標: 呈現多方共贏 -> 方法: 頁籤式介面(Tabs) + 互動長條圖(Chart.js) -> 互動: 切換不同利害關係人(用戶/國泰/社會)的頁籤，懸停圖表看具體指標 -> 理由: 頁籤結構清晰區分不同視角，互動圖表將抽象的KPI效益具象化。
+        4. 永續循環 -> 目標: 視覺化良性循環的核心概念 -> 方法: HTML/CSS/JS 動態圓環圖 -> 互動: 圓環節點自動輪播，點擊可暫停並顯示該節點的詳細說明 -> 理由: 動態效果象徵「生生不息」，是整個報告的視覺亮點與核心記憶點，極具說服力。
+        5. 實踐藍圖 -> 目標: 展現計畫的可行性 -> 方法: HTML/CSS 互動時間軸 -> 互動: 點擊不同階段顯示該階段的詳細目標與指標 -> 理由: 時間軸清晰呈現執行路徑，給予評審信心。
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FDFBF8;
+            color: #333333;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            width: 100%;
+            max-width: 700px;
+            max-height: 400px;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #D4AF37;
+            border-bottom-color: #D4AF37;
+        }
+        .tab-button.active {
+            background-color: #005F52;
+            color: #FFFFFF;
+        }
+        .cycle-node {
+            transition: all 0.5s ease;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .cycle-node.active {
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+            border-color: #D4AF37;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            left: -0.875rem; /* (1.5rem - 0.25rem)/2 + border */
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: #FDFBF8;
+            border: 4px solid #D4AF37;
+            border-radius: 9999px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-[#005F52] text-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold">國泰 Health+ Mandate</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#crisis" class="nav-link">危機現況</a>
+                <a href="#solution" class="nav-link">核心解方</a>
+                <a href="#value" class="nav-link">價值主張</a>
+                <a href="#cycle" class="nav-link">永續循環</a>
+                <a href="#blueprint" class="nav-link">實踐藍圖</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4">
+            <a href="#crisis" class="block py-2 nav-link text-center">危機現況</a>
+            <a href="#solution" class="block py-2 nav-link text-center">核心解方</a>
+            <a href="#value" class="block py-2 nav-link text-center">價值主張</a>
+            <a href="#cycle" class="block py-2 nav-link text-center">永續循環</a>
+            <a href="#blueprint" class="block py-2 nav-link text-center">實踐藍圖</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold text-[#005F52]">The Health+ Mandate</h2>
+                <p class="mt-4 text-lg md:text-xl text-gray-600">一份為台灣打造更健康、永續未來的商業企劃書</p>
+                <p class="mt-8 max-w-3xl mx-auto text-gray-500">
+                    這不僅是一個新產品，更是對保險公司在21世紀社會角色的重新定義。我們旨在將國泰從被動的「事後理賠者」，轉型為主動的「事前健康夥伴」，透過科技與人性的結合，為用戶、企業與社會創造共享價值。
+                </p>
+                 <a href="#crisis" class="mt-10 inline-block bg-[#005F52] text-white font-bold py-3 px-8 rounded-full hover:bg-[#004c41] transition duration-300">探索計畫</a>
+            </div>
+        </section>
+
+        <section id="crisis" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#005F52]">無法迴避的未來：台灣的燃眉之急</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-gray-600">台灣社會正加速駛向超高齡化的未來，衍生出的「不健康餘命」危機與傳統保險的「惡性循環」，正從根本動搖我們的社會安全體系，需要立即且創新的解方。</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#D4AF37]">
+                        <p class="text-5xl font-bold text-[#005F52]">2025</p>
+                        <p class="mt-2 text-gray-700 font-semibold">台灣邁入「超高齡社會」</p>
+                        <p class="text-sm text-gray-500 mt-1">每 5 人中即有 1 位是長者</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#D4AF37]">
+                        <p class="text-5xl font-bold text-[#005F52]">7.78<span class="text-2xl">年</span></p>
+                        <p class="mt-2 text-gray-700 font-semibold">國人平均「不健康餘命」</p>
+                        <p class="text-sm text-gray-500 mt-1">高昂的醫療與長照開銷成為巨大負擔</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#D4AF37]">
+                        <p class="text-5xl font-bold text-[#005F52]">1 : 1.1</p>
+                        <p class="mt-2 text-gray-700 font-semibold">2070年預估扶養比</p>
+                        <p class="text-sm text-gray-500 mt-1">一位工作者需扶養一位長者，世代壓力遽增</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-[#005F52] mb-4 text-center">保險的惡性循環</h3>
+                        <div class="space-y-4">
+                             <div class="flex items-center p-3 bg-red-50 rounded-lg">
+                                <span class="text-2xl mr-4">👵</span>
+                                <div><strong class="text-red-700">高齡化加劇</strong><p class="text-sm text-gray-600">高風險保戶佔比提升，理賠支出大增。</p></div>
+                            </div>
+                            <div class="text-center text-2xl text-gray-400">↓</div>
+                            <div class="flex items-center p-3 bg-yellow-50 rounded-lg">
+                                <span class="text-2xl mr-4">💰</span>
+                                <div><strong class="text-yellow-700">保費被迫調漲</strong><p class="text-sm text-gray-600">為維持財務穩健，保險公司調高均一費率。</p></div>
+                            </div>
+                            <div class="text-center text-2xl text-gray-400">↓</div>
+                             <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <span class="text-2xl mr-4">🤷‍♂️</span>
+                                <div><strong class="text-blue-700">年輕人被勸退</strong><p class="text-sm text-gray-600">低風險的年輕族群因保費過高而放棄投保。</p></div>
+                            </div>
+                            <div class="text-center text-2xl text-gray-400">↓</div>
+                            <div class="flex items-center p-3 bg-red-50 rounded-lg">
+                                <span class="text-2xl mr-4">📉</span>
+                                <div><strong class="text-red-700">風險池失衡</strong><p class="text-sm text-gray-600">健康年輕人減少，風險更集中，循環加劇。</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-bold text-[#005F52] mb-4 text-center">高齡扶養比趨勢</h3>
+                        <p class="text-center text-sm text-gray-500 mb-4">每百位工作年齡人口需扶養之老年人口數</p>
+                        <div class="chart-container">
+                            <canvas id="dependencyRatioChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#005F52]">核心解方：從支付者到夥伴</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-gray-600">我們提出Health+ App作為核心引擎，導入「健康的貨幣」—國泰小樹點，將保險從被動的財務合約，轉變為主動、高頻互動的健康生活服務。</p>
+                </div>
+                <div class="max-w-4xl mx-auto bg-gray-800 rounded-2xl p-4 md:p-6 shadow-2xl">
+                    <div class="aspect-w-16 aspect-h-9 bg-gray-700 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div class="md:w-1/2 text-white">
+                            <h3 class="text-3xl font-bold text-white mb-2">國泰 Health+</h3>
+                            <p class="text-lg text-gray-300 mb-6">您的健康生活夥伴</p>
+                            <div class="space-y-4 text-left">
+                                <div class="solution-card p-4 rounded-lg bg-gray-600 cursor-pointer hover:bg-gray-500 transition" data-content="solution-content-1">
+                                    <h4 class="font-bold text-white">📊 健康數據整合</h4>
+                                    <p class="text-sm text-gray-300">安全整合穿戴裝置數據，量化您的健康。</p>
+                                </div>
+                                <div class="solution-card p-4 rounded-lg bg-gray-600 cursor-pointer hover:bg-gray-500 transition" data-content="solution-content-2">
+                                    <h4 class="font-bold text-white">🌳 小樹點獎勵</h4>
+                                    <p class="text-sm text-gray-300">達成健康目標，賺取有價值的點數回饋。</p>
+                                </div>
+                                <div class="solution-card p-4 rounded-lg bg-gray-600 cursor-pointer hover:bg-gray-500 transition" data-content="solution-content-3">
+                                    <h4 class="font-bold text-white">💸 動態保費折抵</h4>
+                                    <p class="text-sm text-gray-300">您的健康，決定您的保費，公平且透明。</p>
+                                </div>
+                                <div class="solution-card p-4 rounded-lg bg-gray-600 cursor-pointer hover:bg-gray-500 transition" data-content="solution-content-4">
+                                    <h4 class="font-bold text-white">❤️ 公益捐贈</h4>
+                                    <p class="text-sm text-gray-300">將您的努力轉化為愛心，幫助弱勢。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 flex items-center justify-center p-4">
+                            <div id="solution-content-display" class="bg-[#005F52] text-white p-8 rounded-xl shadow-inner w-full min-h-[200px] flex flex-col justify-center items-center transition-opacity duration-500">
+                                <div id="solution-content-1" class="solution-content-item text-center">
+                                    <p class="text-4xl mb-4">📊</p><h4 class="text-xl font-bold">數據驅動，個人化體驗</h4><p class="mt-2">在您授權下，整合步數、睡眠等數據，提供個人化健康建議，將抽象的健康化為具體指標。</p>
+                                </div>
+                                <div id="solution-content-2" class="solution-content-item text-center hidden">
+                                    <p class="text-4xl mb-4">🌳</p><h4 class="text-xl font-bold">無縫接軌小樹點生態圈</h4><p class="mt-2">賺取的每1點都是真實的1元價值，可於加油、購物、兌換哩程等多元場景使用，價值立即可見。</p>
+                                </div>
+                                <div id="solution-content-3" class="solution-content-item text-center hidden">
+                                     <p class="text-4xl mb-4">💸</p><h4 class="text-xl font-bold">賺取你的折扣</h4><p class="mt-2">打破傳統均一費率，讓健康的年輕人不再為他人的風險買單。保險從支出變為主動管理的成本。</p>
+                                </div>
+                                <div id="solution-content-4" class="solution-content-item text-center hidden">
+                                     <p class="text-4xl mb-4">❤️</p><h4 class="text-xl font-bold">讓健康更有影響力</h4><p class="mt-2">您的每一步不僅為了自己，更可選擇將點數捐贈給需要幫助的人，實現個人健康與社會公益的連結。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="value" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#005F52]">多方共贏的價值主張</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-gray-600">Health+ 計畫為用戶、國泰與整體社會，創造了一個互利共生的價值網絡。</p>
+                </div>
+                <div class="max-w-5xl mx-auto">
+                    <div class="mb-8 flex justify-center space-x-2 md:space-x-4 p-1 bg-gray-200 rounded-full">
+                        <button class="tab-button flex-1 py-2 px-4 rounded-full font-semibold transition active" data-target="tab-user">為用戶而生</button>
+                        <button class="tab-button flex-1 py-2 px-4 rounded-full font-semibold transition" data-target="tab-cathay">為國泰而立</button>
+                        <button class="tab-button flex-1 py-2 px-4 rounded-full font-semibold transition" data-target="tab-society">為社會造福</button>
+                    </div>
+
+                    <div id="tab-content" class="bg-white p-8 rounded-lg shadow-lg">
+                        <div id="tab-user" class="tab-pane">
+                             <h3 class="text-2xl font-bold text-center text-[#005F52] mb-6">你的健康，你的獎勵，你的影響力</h3>
+                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                                 <div>
+                                     <p class="text-4xl">🏃</p>
+                                     <h4 class="font-bold my-2">健康生活有價</h4>
+                                     <p class="text-sm text-gray-600">將已有的健康習慣轉化為實質經濟回饋，強化維持動機。</p>
+                                 </div>
+                                 <div>
+                                     <p class="text-4xl">💰</p>
+                                     <h4 class="font-bold my-2">保費負擔減輕</h4>
+                                     <p class="text-sm text-gray-600">對價格敏感的年輕族群，可憑藉健康行為主動降低保費。</p>
+                                 </div>
+                                  <div>
+                                     <p class="text-4xl">🤝</p>
+                                     <h4 class="font-bold my-2">實踐社會公益</h4>
+                                     <p class="text-sm text-gray-600">可將點數捐贈弱勢，讓個人健康行為產生正面社會影響力。</p>
+                                 </div>
+                             </div>
+                        </div>
+                        <div id="tab-cathay" class="tab-pane hidden">
+                            <h3 class="text-2xl font-bold text-center text-[#005F52] mb-6">一個更健康的商業模式</h3>
+                            <p class="text-center text-sm text-gray-500 mb-4">透過轉型，預期將顯著優化核心保險指標，實現永續成長。</p>
+                            <div class="chart-container h-[50vh] max-h-[500px]">
+                                <canvas id="kpiImpactChart"></canvas>
+                            </div>
+                        </div>
+                        <div id="tab-society" class="tab-pane hidden">
+                            <h3 class="text-2xl font-bold text-center text-[#005F52] mb-6">一個更健康、更永續的台灣</h3>
+                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                                 <div>
+                                     <p class="text-4xl">🏥</p>
+                                     <h4 class="font-bold my-2">減輕健保負擔</h4>
+                                     <p class="text-sm text-gray-600">國民更健康，可降低對公共醫療資源的依賴，緩解健保財務壓力。</p>
+                                 </div>
+                                 <div>
+                                     <p class="text-4xl">🎯</p>
+                                     <h4 class="font-bold my-2">響應公共政策</h4>
+                                     <p class="text-sm text-gray-600">與政府推動的普惠金融、數位健康、預防醫學等方向完美契合。</p>
+                                 </div>
+                                  <div>
+                                     <p class="text-4xl">📈</p>
+                                     <h4 class="font-bold my-2">創造數據資產</h4>
+                                     <p class="text-sm text-gray-600">群體化的健康數據能為公共衛生政策提供洞察，實現精準干預。</p>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cycle" class="py-16 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#005F52]">永續的良性循環</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-gray-600">此計畫的核心是創造一個自我強化的飛輪，價值在用戶、國泰、社會之間流動並持續增長，形成生生不息的永續生態。</p>
+                </div>
+                <div class="relative min-h-[450px] md:min-h-[500px] flex items-center justify-center">
+                    <div class="absolute w-64 h-64 md:w-80 md:h-80 border-2 border-dashed border-gray-300 rounded-full"></div>
+                    <div class="absolute w-96 h-96 md:w-[500px] md:h-[500px] border-2 border-dashed border-gray-300 rounded-full"></div>
+                    
+                    <div id="cycle-center-text" class="absolute w-48 h-48 md:w-64 md:h-64 bg-[#005F52] rounded-full flex flex-col items-center justify-center text-white p-4 text-center transition-all duration-500">
+                        <h4 id="cycle-title" class="font-bold text-lg md:text-xl"></h4>
+                        <p id="cycle-description" class="text-sm md:text-base mt-2"></p>
+                    </div>
+
+                    <div id="cycle-node-1" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="更健康的用戶" data-description="在平台激勵下，用戶養成更積極的生活習慣，提升個人健康資本。">
+                        <p class="text-3xl">🏃‍♀️</p>
+                        <p class="font-bold mt-1">更健康的用戶</p>
+                    </div>
+                    <div id="cycle-node-2" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="國泰風險降低" data-description="更健康的保戶群體，直接轉化為更低的理賠成本，優化風險池結構。">
+                        <p class="text-3xl">🛡️</p>
+                        <p class="font-bold mt-1">國泰風險降低</p>
+                    </div>
+                    <div id="cycle-node-3" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="社會負擔減輕" data-description="國民健康水平提升，減少對健保與長照資源的依賴，緩解國家財政壓力。">
+                        <p class="text-3xl">🏛️</p>
+                        <p class="font-bold mt-1">社會負擔減輕</p>
+                    </div>
+                    <div id="cycle-node-4" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="用戶回饋更佳" data-description="節省的成本，能以更優惠的保費與獎勵回饋給用戶，強化參與動機。">
+                        <p class="text-3xl">🎁</p>
+                        <p class="font-bold mt-1">用戶回饋更佳</p>
+                    </div>
+                    <div id="cycle-node-5" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="吸引更多用戶" data-description="更具吸引力的價值主張，吸引更多年輕、低風險族群加入，進一步強化循環。">
+                        <p class="text-3xl">✨</p>
+                        <p class="font-bold mt-1">吸引更多用戶</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blueprint" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#005F52]">分階段實踐藍圖</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-gray-600">我們規劃了清晰、務實的執行路徑，從試點到全面推廣，確保宏大願景能夠穩健落地。</p>
+                </div>
+                 <div class="max-w-4xl mx-auto">
+                    <div class="relative border-l-2 border-gray-300 pl-8 space-y-16">
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold text-[#005F52]">第一階段：試點 (第1-6個月)</h3>
+                            <p class="text-gray-500 mt-1">驗證核心功能與價值主張，測試業務員轉型模式。</p>
+                            <div class="mt-4 p-4 bg-white rounded-lg shadow-sm">
+                                <p><strong>目標群體：</strong>2-3個分公司, 約100位冠軍業務員, 5,000名早期用戶。</p>
+                                <p><strong>成功指標：</strong>App下載率 > 80%, 月活躍度 > 50%, 用戶滿意度 > 4.0/5.0。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold text-[#005F52]">第二階段：擴展 (第7-18個月)</h3>
+                            <p class="text-gray-500 mt-1">優化產品流程，擴大業務員培訓，拓展合作夥伴。</p>
+                            <div class="mt-4 p-4 bg-white rounded-lg shadow-sm">
+                                <p><strong>目標群體：</strong>擴展至30%業務員團隊, 目標獲取10萬名活躍用戶。</p>
+                                <p><strong>成功指標：</strong>客戶獲取成本(CAC)穩定下降, 用戶留存率達標, 簽署3-5家新夥伴。</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold text-[#005F52]">第三階段：全面推廣 (第19個月後)</h3>
+                            <p class="text-gray-500 mt-1">作為核心產品全面推廣，深化與政府的數據合作。</p>
+                            <div class="mt-4 p-4 bg-white rounded-lg shadow-sm">
+                                <p><strong>目標群體：</strong>全體業務員, 目標市場滲透率達5%。</p>
+                                <p><strong>成功指標：</strong>風險池健康度顯著提升, 理賠損失率下降, 啟動與政府的匿名數據合作。</p>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#005F52] text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p class="font-bold">國泰 Health+ Mandate</p>
+            <p class="text-sm mt-2 text-gray-300">© 2025 國泰人壽. All Rights Reserved. 此為概念性提案展示。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const depRatioCtx = document.getElementById('dependencyRatioChart').getContext('2d');
+            new Chart(depRatioCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2024', '2030', '2040', '2050', '2060', '2070'],
+                    datasets: [{
+                        label: '老年人口扶養比',
+                        data: [27.7, 36.8, 56.8, 74.0, 85.5, 92.5],
+                        borderColor: '#005F52',
+                        backgroundColor: 'rgba(0, 95, 82, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `扶養比: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) { return value + '%'; }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const kpiCtx = document.getElementById('kpiImpactChart').getContext('2d');
+            new Chart(kpiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['客戶獲取成本 (CAC)', '客戶終身價值 (LTV)', 'LTV:CAC 比例', '年度客戶流失率'],
+                    datasets: [
+                        {
+                            label: '當前行業基準',
+                            data: [100, 300, 3, 76],
+                            backgroundColor: 'rgba(212, 175, 55, 0.6)',
+                            borderColor: 'rgba(212, 175, 55, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Health+ 預期表現',
+                            data: [75, 360, 4.8, 40],
+                            backgroundColor: 'rgba(0, 95, 82, 0.6)',
+                            borderColor: 'rgba(0, 95, 82, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                           callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.raw !== null) {
+                                        let value = context.raw;
+                                        if(context.label === '年度客戶流失率') value += '%';
+                                        if(context.label === 'LTV:CAC 比例') value = value + ':1';
+                                        label += value;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: { x: { beginAtZero: true } }
+                }
+            });
+
+            const solutionCards = document.querySelectorAll('.solution-card');
+            const solutionContentItems = document.querySelectorAll('.solution-content-item');
+            solutionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const contentId = card.getAttribute('data-content');
+                    solutionContentItems.forEach(item => {
+                        item.classList.add('hidden');
+                    });
+                    document.getElementById(contentId).classList.remove('hidden');
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+                    
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabPanes.forEach(pane => {
+                        if (pane.id === targetId) {
+                            pane.classList.remove('hidden');
+                        } else {
+                            pane.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const cycleNodes = document.querySelectorAll('.cycle-node');
+            const cycleTitle = document.getElementById('cycle-title');
+            const cycleDescription = document.getElementById('cycle-description');
+            let cycleInterval;
+            let currentNodeIndex = 0;
+
+            function positionNodes() {
+                const radius = window.innerWidth > 768 ? 220 : 170;
+                const numNodes = cycleNodes.length;
+                cycleNodes.forEach((node, i) => {
+                    const angle = (i / numNodes) * 2 * Math.PI - (Math.PI / 2);
+                    const x = radius * Math.cos(angle);
+                    const y = radius * Math.sin(angle);
+                    node.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            }
+
+            function updateCycleContent(node) {
+                cycleTitle.textContent = node.dataset.title;
+                cycleDescription.textContent = node.dataset.description;
+                cycleNodes.forEach(n => n.classList.remove('active'));
+                node.classList.add('active');
+            }
+
+            function startCycleAnimation() {
+                cycleInterval = setInterval(() => {
+                    currentNodeIndex = (currentNodeIndex + 1) % cycleNodes.length;
+                    const currentNode = cycleNodes[currentNodeIndex];
+                    updateCycleContent(currentNode);
+                }, 3000);
+            }
+
+            cycleNodes.forEach((node, index) => {
+                node.addEventListener('click', () => {
+                    clearInterval(cycleInterval);
+                    currentNodeIndex = index;
+                    updateCycleContent(node);
+                    setTimeout(startCycleAnimation, 5000); 
+                });
+            });
+
+            positionNodes();
+            window.addEventListener('resize', positionNodes);
+            updateCycleContent(cycleNodes[0]);
+            startCycleAnimation();
+            
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === entry.target.id) {
+                      link.classList.add('active');
+                    }
+                  });
+                }
+              });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+              observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
