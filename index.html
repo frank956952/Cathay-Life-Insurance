@@ -1164,35 +1164,49 @@ function setupYouthDilemmaObserver() {
 
 
 
-function startCycleAnimation(){
-            const poolOld = document.getElementById('pool-old');
-            const poolYoung = document.getElementById('pool-young');
-            const cycleText = document.getElementById('cycle-text');
-
-            setTimeout(() => {
-                cycleText.textContent = '高齡、高風險用戶增加...';
-                cycleText.classList.add('text-red-500');
-                poolOld.style.height = '6rem'; 
-            }, 1000);
-             setTimeout(() => {
-                cycleText.textContent = '導致保費上漲...';
-                cycleText.classList.remove('text-red-500');
-                cycleText.classList.add('text-yellow-500');
-            }, 2500);
-            setTimeout(() => {
-                cycleText.textContent = '健康的年輕人被勸退...';
-                cycleText.classList.remove('text-yellow-500');
-                cycleText.classList.add('text-blue-500');
-                poolYoung.style.height = '1.5rem';
-            }, 4000);
-            setTimeout(() => {
-                cycleText.textContent = '風險池失衡，陷入惡性循環。';
-                 cycleText.classList.remove('text-blue-500');
-                cycleText.classList.add('text-red-700');
-                poolOld.style.height = '7rem';
-                poolYoung.style.height = '1rem';
-            }, 5500);
-        }
+function startCycleAnimation() {
+    // Get all required elements with error checking
+    const poolOld = document.getElementById('pool-old');
+    const poolYoung = document.getElementById('pool-young');
+    const cycleText = document.getElementById('cycle-text');
+    
+    // Verify all elements exist before proceeding
+    if (!poolOld || !poolYoung || !cycleText) {
+        console.error("Missing elements for cycle animation");
+        return;
+    }
+    
+    // Reset initial state
+    cycleText.textContent = "一個平衡的風險池";
+    cycleText.className = "text-lg font-semibold text-gray-700 transition-opacity duration-500";
+    poolOld.style.height = '3rem';
+    poolYoung.style.height = '3rem';
+    
+    // Animation sequence with proper class handling
+    setTimeout(() => {
+        cycleText.textContent = '高齡、高風險用戶增加...';
+        cycleText.className = "text-lg font-semibold text-red-500 transition-opacity duration-500";
+        poolOld.style.height = '6rem'; 
+    }, 1000);
+    
+    setTimeout(() => {
+        cycleText.textContent = '導致保費上漲...';
+        cycleText.className = "text-lg font-semibold text-yellow-500 transition-opacity duration-500";
+    }, 2500);
+    
+    setTimeout(() => {
+        cycleText.textContent = '健康的年輕人被勸退...';
+        cycleText.className = "text-lg font-semibold text-blue-500 transition-opacity duration-500";
+        poolYoung.style.height = '1.5rem';
+    }, 4000);
+    
+    setTimeout(() => {
+        cycleText.textContent = '風險池失衡，陷入惡性循環。';
+        cycleText.className = "text-lg font-semibold text-red-700 transition-opacity duration-500";
+        poolOld.style.height = '7rem';
+        poolYoung.style.height = '1rem';
+    }, 5500);
+}
 
         const phoneContentEl = document.getElementById('phone-content');
         const solutionSteps = document.querySelectorAll('.solution-step');
@@ -1446,13 +1460,7 @@ function updateCycleContent(node) {
     node.classList.add('active');
 }
 
-function startCycleAnimation() {
-    cycleInterval = setInterval(() => {
-        currentNodeIndex = (currentNodeIndex + 1) % cycleNodes.length;
-        const currentNode = cycleNodes[currentNodeIndex];
-        updateCycleContent(currentNode);
-    }, 3000);
-}
+
 
 cycleNodes.forEach((node, index) => {
     node.addEventListener('click', () => {
