@@ -20,6 +20,16 @@
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        .cycle-node {
+    transition: all 0.5s ease;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.cycle-node.active {
+    transform: scale(1.1);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+    border-color: #D4AF37;
+}
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: #F8F9FA;
@@ -161,16 +171,9 @@
     }
 }
 
-.fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
 
-.fade-in.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+
+
 
 /* Life Expectancy Visualization */
 #life-expectancy-vis {
@@ -274,6 +277,81 @@
     .chart-container {
         height: 400px;
     }
+}
+
+/* Tab 按鈕的基本樣式 */
+.tab-button {
+    @apply px-4 py-2 md:px-6 md:py-3 text-base md:text-lg font-medium rounded-full transition-all duration-300 whitespace-nowrap;
+}
+
+/* Tab 按鈕的激活狀態 */
+.tab-button.active {
+    @apply bg-green-600 text-white shadow-md;
+}
+
+/* 如果不使用 Tailwind，傳統 CSS 寫法 */
+.tab-button {
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    font-size: 1rem; /* text-base */
+    font-weight: 500; /* font-medium */
+    border-radius: 9999px; /* rounded-full */
+    transition: all 0.3s ease; /* transition-all duration-300 */
+    white-space: nowrap; /* whitespace-nowrap */
+    border: none;
+    background: transparent;
+    color: #6b7280; /* text-gray-500 */
+    cursor: pointer;
+}
+
+/* 桌面版樣式 */
+@media (min-width: 768px) {
+    .tab-button {
+        padding: 0.75rem 1.5rem; /* md:py-3 md:px-6 */
+        font-size: 1.125rem; /* md:text-lg */
+    }
+}
+
+/* 激活狀態 */
+.tab-button.active {
+    background-color: #059669; /* bg-green-600 */
+    color: white; /* text-white */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+}
+
+/* Hover 效果（可選） */
+.tab-button:hover:not(.active) {
+    background-color: #f3f4f6; /* hover:bg-gray-100 */
+    color: #374151; /* hover:text-gray-700 */
+}
+
+/* Focus 效果（可選） */
+.tab-button:focus {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+/* Tab 容器樣式 */
+#tabs {
+    background-color: #e5e7eb; /* bg-gray-200 */
+    border-radius: 9999px; /* rounded-full */
+    padding: 0.375rem; /* p-1.5 */
+    display: flex; /* flex */
+    gap: 0.5rem; /* space-x-2 */
+    overflow-x: auto; /* overflow-x-auto */
+}
+
+/* 滾動條樣式（可選） */
+#tabs::-webkit-scrollbar {
+    height: 4px;
+}
+
+#tabs::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#tabs::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 2px;
 }
     </style>
 </head>
@@ -574,11 +652,11 @@
             </div>
             <div class="w-full max-w-5xl fade-in">
                 <div class="flex justify-center mb-8">
-                    <div id="tabs" class="bg-gray-200 rounded-full p-2 flex space-x-2">
-                        <button data-tab="user" class="tab-button active">為您 (用戶)</button>
-                        <button data-tab="cathay" class="tab-button">為國泰</button>
-                        <button data-tab="society" class="tab-button">為社會</button>
-                    </div>
+                        <div id="tabs" class="bg-gray-200 rounded-full p-1.5 flex space-x-2 overflow-x-auto">
+                            <button data-tab="user" class="tab-button active">為您 (用戶)</button>
+                            <button data-tab="cathay" class="tab-button">為國泰</button>
+                            <button data-tab="society" class="tab-button">為社會</button>
+                        </div>
                 </div>
                 <div id="tab-content" class="apple-card">
                     <!-- JS 會更新這裡的內容 -->
@@ -636,17 +714,42 @@
             </div>
         </section>
 
-        <section id="vision" class="h-screen w-screen flex flex-col justify-center items-center text-center p-8 bg-gray-800 text-white">
-            <div class="fade-in">
-                <p class="text-green-400 font-semibold mb-2">我們的願景</p>
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight">啟動良性循環</h2>
-                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-12">投資一個更健康、更公平、更永續的台灣</p>
-            </div>
-            <div id="final-cycle" class="w-full max-w-2xl h-64 relative flex items-center justify-center fade-in">
-                <!-- JS 會在這裡創建循環動畫 -->
-            </div>
-            <div class="fade-in mt-12">
-                 <h3 class="text-2xl font-bold">誠摯邀請您，與我們共同前行。</h3>
+        <section id="cycle" class="py-16 md:py-32 bg-gray-800">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-500 mb-4">永續的良性循環</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-gray-100">此計畫的核心是創造一個自我強化的飛輪，價值在用戶、國泰、社會之間流動並持續增長，形成生生不息的永續生態。</p>
+                </div>
+                <div class="relative min-h-[450px] md:min-h-[500px] flex items-center justify-center">
+                    <div class="absolute w-64 h-64 md:w-80 md:h-80 border-2 border-dashed border-gray-300 rounded-full"></div>
+                    <div class="absolute w-96 h-96 md:w-[500px] md:h-[500px] border-2 border-dashed border-gray-300 rounded-full"></div>
+                    
+                    <div id="cycle-center-text" class="absolute w-48 h-48 md:w-64 md:h-64 bg-[#005F52] rounded-full flex flex-col items-center justify-center text-white p-4 text-center transition-all duration-500">
+                        <h4 id="cycle-title" class="font-bold text-lg md:text-xl"></h4>
+                        <p id="cycle-description" class="text-sm md:text-base mt-2"></p>
+                    </div>
+
+                    <div id="cycle-node-1" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="更健康的用戶" data-description="在平台激勵下，用戶養成更積極的生活習慣，提升個人健康資本。">
+                        <p class="text-3xl">🏃‍♀️</p>
+                        <p class="font-bold mt-1">更健康的用戶</p>
+                    </div>
+                    <div id="cycle-node-2" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="國泰風險降低" data-description="更健康的保戶群體，直接轉化為更低的理賠成本，優化風險池結構。">
+                        <p class="text-3xl">🛡️</p>
+                        <p class="font-bold mt-1">國泰風險降低</p>
+                    </div>
+                    <div id="cycle-node-3" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="社會負擔減輕" data-description="國民健康水平提升，減少對健保與長照資源的依賴，緩解國家財政壓力。">
+                        <p class="text-3xl">🏛️</p>
+                        <p class="font-bold mt-1">社會負擔減輕</p>
+                    </div>
+                    <div id="cycle-node-4" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="用戶回饋更佳" data-description="節省的成本，能以更優惠的保費與獎勵回饋給用戶，強化參與動機。">
+                        <p class="text-3xl">🎁</p>
+                        <p class="font-bold mt-1">用戶回饋更佳</p>
+                    </div>
+                    <div id="cycle-node-5" class="cycle-node absolute cursor-pointer p-4 w-32 h-32 md:w-40 md:h-40 bg-white rounded-full flex flex-col justify-center items-center text-center border-4 border-transparent" data-title="吸引更多用戶" data-description="更具吸引力的價值主張，吸引更多年輕、低風險族群加入，進一步強化循環。">
+                        <p class="text-3xl">✨</p>
+                        <p class="font-bold mt-1">吸引更多用戶</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1319,57 +1422,52 @@ function startCycleAnimation(){
             });
         }
         
-        function renderFinalCycle() {
-            const container = document.getElementById('final-cycle');
-            if (container.children.length > 0) return;
+        const cycleNodes = document.querySelectorAll('.cycle-node');
+const cycleTitle = document.getElementById('cycle-title');
+const cycleDescription = document.getElementById('cycle-description');
+let cycleInterval;
+let currentNodeIndex = 0;
 
-            const items = [
-                { text: '更健康的用戶', icon: '❤️' },
-                { text: '國泰風險降低', icon: '🛡️' },
-                { text: '政府負擔減輕', icon: '🏥' },
-                { text: '用戶回饋更佳', icon: '💰' },
-                { text: '吸引更多用戶', icon: '👥' },
-            ];
+function positionNodes() {
+    const radius = window.innerWidth > 768 ? 220 : 170;
+    const numNodes = cycleNodes.length;
+    cycleNodes.forEach((node, i) => {
+        const angle = (i / numNodes) * 2 * Math.PI - (Math.PI / 2);
+        const x = radius * Math.cos(angle);
+        const y = radius * Math.sin(angle);
+        node.style.transform = `translate(${x}px, ${y}px)`;
+    });
+}
 
-            const radius = 100;
-            items.forEach((item, i) => {
-                const angle = (i / items.length) * 2 * Math.PI - (Math.PI / 2);
-                const x = radius * Math.cos(angle);
-                const y = radius * Math.sin(angle);
+function updateCycleContent(node) {
+    cycleTitle.textContent = node.dataset.title;
+    cycleDescription.textContent = node.dataset.description;
+    cycleNodes.forEach(n => n.classList.remove('active'));
+    node.classList.add('active');
+}
 
-                const node = document.createElement('div');
-                node.className = 'absolute flex flex-col items-center transition-all duration-700 opacity-0';
-                node.style.transform = `translate(${x}px, ${y}px) scale(0.8)`;
-                node.innerHTML = `
-                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-3xl mb-2">${item.icon}</div>
-                    <p class="text-sm font-medium text-center">${item.text}</p>
-                `;
-                container.appendChild(node);
+function startCycleAnimation() {
+    cycleInterval = setInterval(() => {
+        currentNodeIndex = (currentNodeIndex + 1) % cycleNodes.length;
+        const currentNode = cycleNodes[currentNodeIndex];
+        updateCycleContent(currentNode);
+    }, 3000);
+}
 
-                setTimeout(() => {
-                    node.style.opacity = '1';
-                    node.style.transform = `translate(${x}px, ${y}px) scale(1)`;
-                }, i * 300);
+cycleNodes.forEach((node, index) => {
+    node.addEventListener('click', () => {
+        clearInterval(cycleInterval);
+        currentNodeIndex = index;
+        updateCycleContent(node);
+        setTimeout(startCycleAnimation, 5000); 
+    });
+});
 
-                 setTimeout(() => {
-                    const nodes = container.querySelectorAll('div.absolute');
-                    let animationInterval;
-                    if(animationInterval) clearInterval(animationInterval);
-                    animationInterval = setInterval(() => {
-                        const activeIndex = Math.floor((Date.now() / 1500) % items.length);
-                        nodes.forEach((n, index) => {
-                            if (index === activeIndex) {
-                                n.classList.add('scale-110', 'shadow-lg');
-                                n.querySelector('div').classList.add('bg-green-400');
-                            } else {
-                                n.classList.remove('scale-110', 'shadow-lg');
-                                 n.querySelector('div').classList.remove('bg-green-400');
-                            }
-                        });
-                    }, 100);
-                }, items.length * 300);
-            });
-        }
+// 初始化
+positionNodes();
+window.addEventListener('resize', positionNodes);
+updateCycleContent(cycleNodes[0]);
+startCycleAnimation();
     });
 
     // 在現有的script標籤中，更新以下JavaScript部分
