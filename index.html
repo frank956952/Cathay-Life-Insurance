@@ -179,29 +179,30 @@
 #life-expectancy-vis {
     position: relative;
     overflow: hidden;
+    height: 6rem !important;
+    border-radius: 9999px !important;
+    background-color: #e5e7eb !important;
 }
 
 #healthy-years, #unhealthy-years {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    transition: width 1s ease-in-out;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: width 1s ease-in-out !important;
 }
 
 #healthy-years {
-    background: linear-gradient(to right, #4ade80, #14b8a6);
-     position: relative;
-    z-index: 2;
+    z-index: 2 !important;
+    background: linear-gradient(to right, #4ade80, #14b8a6) !important;
 }
 
 #unhealthy-years {
-    background: #f87171;
-     position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 1;
+     position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    z-index: 1 !important;
+    background-color: #f87171 !important;
 }
 
 @media (max-width: 768px) {
@@ -906,47 +907,48 @@ const observer = new IntersectionObserver((entries, observer) => {
         }
         
 
+// 修改 startLifeExpectancyAnimation 函數，增加更強健的錯誤處理
 function startLifeExpectancyAnimation() {
+    console.log("開始執行健康餘命動畫");
     const healthyBar = document.getElementById('healthy-years');
     const unhealthyBar = document.getElementById('unhealthy-years');
     const costCounter = document.getElementById('care-cost');
     
-    if (!healthyBar || !unhealthyBar || !costCounter) return;
+    if (!healthyBar) console.error("找不到 healthy-years 元素");
+    if (!unhealthyBar) console.error("找不到 unhealthy-years 元素");
+    if (!costCounter) console.error("找不到 care-cost 元素");
     
-    // 動畫開始前稍作延遲
+    if (!healthyBar || !unhealthyBar) return;
+    
+    // 確保初始寬度設為0
+    healthyBar.style.width = '0%';
+    unhealthyBar.style.width = '0%';
+    
+    // 延遲執行以確保DOM完全加載
     setTimeout(() => {
-        // 根據2018年數據：健康餘命72.2年，不健康餘命8.5年
-        // 總餘命80.7年，健康比例約89.5%，不健康比例約10.5%
         healthyBar.style.width = '89.5%';
         unhealthyBar.style.width = '10.5%';
-    }, 300);
-
-    // 成本計數器動畫 - 更新為384萬元
-    let start = 0;
-    const end = 3840000; // 4萬/月 × 8年 × 12個月 = 384萬
-    const duration = 2000; // 動畫持續2秒
-    const startTime = performance.now();
-
-    function animateCost(currentTime) {
-        const elapsedTime = currentTime - startTime;
-        
-        if (elapsedTime > duration) {
-            costCounter.textContent = 'NT$ ' + end.toLocaleString();
-            return;
-        }
-        
-        const progress = elapsedTime / duration;
-        const easeOutQuad = 1 - (1 - progress) * (1 - progress); // 緩出動畫
-        const currentCost = Math.floor(easeOutQuad * end);
-        
-        costCounter.textContent = 'NT$ ' + currentCost.toLocaleString();
-        requestAnimationFrame(animateCost);
-    }
-    
-    // 延遲啟動成本動畫，讓進度條先開始
-    setTimeout(() => {
-        requestAnimationFrame(animateCost);
+        console.log("健康餘命條寬度已設置");
     }, 500);
+    
+    // 成本計數器處理 (如果存在)
+    if (costCounter) {
+        setTimeout(() => {
+            let current = 0;
+            const end = 3840000;
+            const step = 100000;
+            
+            const interval = setInterval(() => {
+                current += step;
+                if (current >= end) {
+                    clearInterval(interval);
+                    costCounter.textContent = 'NT$ ' + end.toLocaleString();
+                } else {
+                    costCounter.textContent = 'NT$ ' + current.toLocaleString();
+                }
+            }, 50);
+        }, 800);
+    }
 }
 
 
@@ -1629,7 +1631,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         navContainer.appendChild(dot);
         navDots.push(dot);
-    });
+
+    setTimeout(() => {
+        const unhealthySection = document.getElementById('unhealthy-expectancy');
+        if (unhealthySection && !unhealthySection.dataset.rendered) {
+            console.log("自動初始化健康餘命視覺化");
+            startLifeExpectancyAnimation();
+            unhealthySection.dataset.rendered = true;
+        }
+    }, 2000);
+});
 
     const observerOptions = {
         root: null,
