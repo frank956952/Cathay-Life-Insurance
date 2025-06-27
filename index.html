@@ -175,7 +175,7 @@
 
 
 
-/* Life Expectancy Visualization */
+/* 健康餘命視覺化 */
 #life-expectancy-vis {
     position: relative;
     overflow: hidden;
@@ -297,7 +297,7 @@
     font-weight: 500; /* font-medium */
     border-radius: 9999px; /* rounded-full */
     transition: all 0.3s ease; /* transition-all duration-300 */
-    white-space: nowrap; /* whitespace-nowrap */
+    white-space: nowrap; /* whitespace-nowrap
     border: none;
     background: transparent;
     color: #6b7280; /* text-gray-500 */
@@ -409,11 +409,11 @@
                  <p class="text-gray-600 mb-6">自2000年起，台灣不健康存活年數呈現微幅上升趨勢。2018年國人不健康的存活年為8.5年，顯示儘管醫療水準提升、人均壽命延長，但我們仍無法有效縮短不健康的存活年數。</p>
                  
                  <!-- 健康餘命視覺化 -->
-        <div id="life-expectancy-vis" class="w-full h-24 bg-gray-200 rounded-full overflow-hidden flex relative">
-            <div id="healthy-years" class="h-full transition-all duration-1000 flex items-center justify-center text-white font-bold bg-gradient-to-r from-green-400 to-teal-400" style="width: 0%;">
+        <div id="life-expectancy-vis" class="w-full h-24 bg-gray-200 rounded-full overflow-hidden flex relative" style="position: relative; height: 6rem; border-radius: 9999px; background-color: #e5e7eb; overflow: hidden; display: flex;">
+            <div id="healthy-years" class="h-full transition-all duration-1000 flex items-center justify-center text-white font-bold bg-gradient-to-r from-green-400 to-teal-400" style="width: 0%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 2; background: linear-gradient(to right, #4ade80, #14b8a6); transition: width 1s ease-in-out;">
                 <span class="text-sm md:text-base">健康餘命 72.2年</span>
             </div>
-            <div id="unhealthy-years" class="h-full transition-all duration-1000 flex items-center justify-center text-white font-bold bg-red-400 absolute right-0" style="width: 0%;">
+            <div id="unhealthy-years" class="h-full transition-all duration-1000 flex items-center justify-center text-white font-bold bg-red-400 absolute right-0" style="width: 0%; height: 100%; position: absolute; right: 0; top: 0; z-index: 1; background-color: #f87171; display: flex; align-items: center; justify-content: center; transition: width 1s ease-in-out;">
                 <span class="text-sm md:text-base">不健康 8.5年</span>
             </div>
         </div>
@@ -909,48 +909,61 @@ const observer = new IntersectionObserver((entries, observer) => {
 
 // 修改 startLifeExpectancyAnimation 函數，增加更強健的錯誤處理
 function startLifeExpectancyAnimation() {
-    console.log("開始執行健康餘命動畫");
-    const healthyBar = document.getElementById('healthy-years');
-    const unhealthyBar = document.getElementById('unhealthy-years');
-    const costCounter = document.getElementById('care-cost');
+  console.log("健康餘命動畫開始執行");
+  const healthyBar = document.getElementById('healthy-years');
+  const unhealthyBar = document.getElementById('unhealthy-years');
+  
+  if (!healthyBar || !unhealthyBar) {
+    console.error("找不到健康餘命視覺化元素，可能頁面結構有問題");
+    return;
+  }
+  
+  console.log("初始狀態:", 
+    "健康條寬度:", healthyBar.style.width, 
+    "不健康條寬度:", unhealthyBar.style.width);
+  
+  // 強制重置初始狀態
+  healthyBar.style.width = '0%';
+  unhealthyBar.style.width = '0%';
+  
+  // 強制重繪DOM
+  void healthyBar.offsetWidth;
+  
+  // 設定最終寬度
+  setTimeout(() => {
+    console.log("設定最終寬度");
+    healthyBar.style.width = '89.5%';
+    unhealthyBar.style.width = '10.5%';
     
-    if (!healthyBar) console.error("找不到 healthy-years 元素");
-    if (!unhealthyBar) console.error("找不到 unhealthy-years 元素");
-    if (!costCounter) console.error("找不到 care-cost 元素");
-    
-    if (!healthyBar || !unhealthyBar) return;
-    
-    // 確保初始寬度設為0
-    healthyBar.style.width = '0%';
-    unhealthyBar.style.width = '0%';
-    
-    // 延遲執行以確保DOM完全加載
+    // 驗證寬度是否已更新
     setTimeout(() => {
-        healthyBar.style.width = '89.5%';
-        unhealthyBar.style.width = '10.5%';
-        console.log("健康餘命條寬度已設置");
-    }, 500);
-    
-    // 成本計數器處理 (如果存在)
-    if (costCounter) {
-        setTimeout(() => {
-            let current = 0;
-            const end = 3840000;
-            const step = 100000;
-            
-            const interval = setInterval(() => {
-                current += step;
-                if (current >= end) {
-                    clearInterval(interval);
-                    costCounter.textContent = 'NT$ ' + end.toLocaleString();
-                } else {
-                    costCounter.textContent = 'NT$ ' + current.toLocaleString();
-                }
-            }, 50);
-        }, 800);
-    }
+      console.log("驗證最終狀態:", 
+        "健康條寬度:", healthyBar.style.width, 
+        "不健康條寬度:", unhealthyBar.style.width);
+    }, 1100);
+  }, 100);
 }
 
+// 確保健康餘命視覺化在頁面載入後立即執行
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("頁面載入完成，準備初始化視覺化");
+  
+  // 等待所有資源加載完成
+  window.addEventListener('load', function() {
+    console.log("資源加載完成，執行健康餘命視覺化");
+    setTimeout(function() {
+      startLifeExpectancyAnimation();
+    }, 1000);
+  });
+  
+  // 作為備份，確保在頁面捲動時也能觸發
+  window.addEventListener('scroll', function() {
+    const healthyBar = document.getElementById('healthy-years');
+    if (healthyBar && healthyBar.style.width === '0%') {
+      startLifeExpectancyAnimation();
+    }
+  }, { once: true });
+});
 
 // 更新的 Youth Chart 渲染函數
 function renderYouthChart() {
