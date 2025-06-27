@@ -259,7 +259,22 @@
     color: #dc2626;
 }
 
+/* 在現有的style標籤中添加或更新以下CSS */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    max-height: 45vh;
+}
 
+@media (min-width: 768px) {
+    .chart-container {
+        height: 400px;
+    }
+}
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -294,8 +309,8 @@
                     <canvas id="agingChart"></canvas>
                 </div>
                 <div class="mt-4 text-sm text-gray-500 border-t pt-4">
-                    <p><strong>數據來源：</strong>國發會「中華民國人口推估（2024年至2070年）」</p>
-                    <p><strong>發布單位：</strong>人力處 | <strong>發布日期：</strong>113-10-17</p>
+                    <p><strong>數據來源：</br></strong>中華民國國家發展委員會。（2025）。中華民國人口推估（2024年至2070年）。取自行政院國家發展委員會網站：https://www.ndc.gov.tw/nc_27_38548</p>
+                    <!-- <p><strong>發布單位：</strong>人力處 | <strong>發布日期：</strong>113-10-17</p> -->
                 </div>
             </div>
             </div>
@@ -353,8 +368,11 @@
                          <p class="text-4xl font-bold text-red-600" id="care-cost">NT$ 3,840,000</p>
                      </div>
                      <p class="text-sm text-gray-500">*不含通膨調整及家人照顧的薪資損失</p>
-                     <p class="text-sm text-red-600 font-medium mt-2">資料來源：PRIDE政策研究指標資料庫、金管會、富邦人壽</p>
-                 </div>
+                <div class="mt-4 text-sm text-gray-500 border-t pt-4">
+                     <p><strong>資料來源：</strong></br>科技政策研究與資訊中心（2020）。抵達終點之前。取自 PRIDE 政策研究指標資料庫：https://reurl.cc/8D1Ydo</p>
+                     <p>崔浩風（2023年11月1日）。合理規劃長照需求，做好數百萬元的長照保障。Advisers財務顧問雜誌。取自 https://www.advisers.com.tw/?p=15165</p>
+                </div>
+                </div>
              </div>
         </div>
     </div>
@@ -378,85 +396,85 @@
                         然而，剛入職場的他們，收入相對較低，經濟尚未穩定，導致購買「能力」嚴重不足。
                     </p>
                 </div>
-                
-                <!-- 圖表與統計數據 -->
-                <div class="grid md:grid-cols-2 gap-8 items-center mb-8">
-                    <div class="text-left">
-                        <h4 class="text-xl font-bold text-gray-800 mb-4">研究發現：意願與能力的巨大落差</h4>
-                        
-                        <!-- 20-29歲重點數據 -->
-                        <div class="bg-red-50 p-4 rounded-xl border border-red-200 mb-4">
-                            <h5 class="font-bold text-red-700 mb-2">20-29歲族群：最大的矛盾</h5>
-                            <div class="grid grid-cols-2 gap-4 text-sm">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-red-600">75%</div>
-                                    <div class="text-gray-600">購買意願</div>
-                                    <div class="text-xs text-red-500">最高</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-red-600">25%</div>
-                                    <div class="text-gray-600">購買能力</div>
-                                    <div class="text-xs text-red-500">最低</div>
-                                </div>
-                            </div>
-                            <div class="mt-2 text-center">
-                                <div class="text-lg font-bold text-red-700">落差：50%</div>
-                                <div class="text-xs text-gray-500">保險業必須正視的核心缺口</div>
-                            </div>
-                        </div>
-                        
-                        <!-- 關鍵洞察 -->
-                        <div class="space-y-3 text-sm text-gray-700">
-                            <div class="flex items-start">
-                                <span class="text-yellow-500 mr-2 mt-1">⚠️</span>
-                                <div><strong>不安全感驅動：</strong>剛從學業進入職場的轉換期，對未來充滿不確定性</div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="text-blue-500 mr-2 mt-1">🎯</span>
-                                <div><strong>獨立意識強：</strong>希望透過保險確保未來的自主性與安全感</div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="text-red-500 mr-2 mt-1">💸</span>
-                                <div><strong>經濟現實：</strong>學貸償還、生活開銷、收入不穩定的多重壓力</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="youthChart"></canvas>
-                    </div>
+            <!-- 圖表與統計數據 -->    
+<div class="grid md:grid-cols-2 gap-8 items-center mb-8">
+    <div class="text-left">
+        <div class="flex justify-center">
+            <h4 class="text-xl font-bold text-gray-800 mb-4 text-center">研究發現：意願與能力的巨大落差</h4>
+        </div>
+        <!-- 20-29歲重點數據 -->
+        <div class="bg-red-50 p-4 rounded-xl border border-red-200 mb-4">
+            <h5 class="font-bold text-red-700 mb-2 text-center">20-29歲族群：最大的矛盾</h5>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-red-600">85%</div>
+                    <div class="text-gray-600">購買意願</div>
+                    <div class="text-xs text-red-500">最高</div>
                 </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-red-600">30%</div>
+                    <div class="text-gray-600">購買能力</div>
+                    <div class="text-xs text-red-500">最低</div>
+                </div>
+            </div>
+            <div class="mt-2 text-center">
+                <div class="text-lg font-bold text-red-700">落差：55%</div>
+                <div class="text-xs text-gray-500">保險業必須正視的核心缺口</div>
+            </div>
+        </div>
+        
+        <!-- 關鍵洞察 -->
+        <div class="space-y-3 text-sm text-gray-700">
+            <div class="flex items-start">
+                <span class="text-yellow-500 mr-2 mt-1">⚠️</span>
+                <div><strong>不安全感驅動：</strong>剛從學業進入職場的轉換期，對未來充滿不確定性</div>
+            </div>
+            <div class="flex items-start">
+                <span class="text-blue-500 mr-2 mt-1">🎯</span>
+                <div><strong>獨立意識強：</strong>希望透過保險確保未來的自主性與安全感</div>
+            </div>
+            <div class="flex items-start">
+                <span class="text-red-500 mr-2 mt-1">💸</span>
+                <div><strong>經濟現實：</strong>學貸償還、生活開銷、收入不穩定的多重壓力</div>
+            </div>
+        </div>
+    </div>
+    <div class="chart-container">
+        <canvas id="youthChart"></canvas>
+    </div>
+</div>
                 
-                <!-- 各年齡層分析對比 -->
+                <!-- 更新各年齡層分析對比部分的數據 -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                     <div class="bg-red-50 p-4 rounded-xl border border-red-200 text-center">
                         <h5 class="font-bold text-red-700 mb-2">20-29歲</h5>
                         <div class="space-y-2">
-                            <div class="text-sm text-gray-600">意願 <span class="font-bold text-red-600">75%</span></div>
-                            <div class="text-sm text-gray-600">能力 <span class="font-bold text-red-600">25%</span></div>
+                            <div class="text-sm text-gray-600">意願 <span class="font-bold text-red-600">85%</span></div>
+                            <div class="text-sm text-gray-600">能力 <span class="font-bold text-red-600">30%</span></div>
                             <div class="text-xs bg-red-100 rounded px-2 py-1">最大落差</div>
                         </div>
                     </div>
                     <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 text-center">
                         <h5 class="font-bold text-yellow-700 mb-2">30-39歲</h5>
                         <div class="space-y-2">
-                            <div class="text-sm text-gray-600">意願 <span class="font-bold text-yellow-600">60%</span></div>
-                            <div class="text-sm text-gray-600">能力 <span class="font-bold text-yellow-600">50%</span></div>
+                            <div class="text-sm text-gray-600">意願 <span class="font-bold text-yellow-600">75%</span></div>
+                            <div class="text-sm text-gray-600">能力 <span class="font-bold text-yellow-600">60%</span></div>
                             <div class="text-xs bg-yellow-100 rounded px-2 py-1">漸趨平衡</div>
                         </div>
                     </div>
                     <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 text-center">
                         <h5 class="font-bold text-blue-700 mb-2">40-49歲</h5>
                         <div class="space-y-2">
-                            <div class="text-sm text-gray-600">意願 <span class="font-bold text-blue-600">50%</span></div>
-                            <div class="text-sm text-gray-600">能力 <span class="font-bold text-blue-600">75%</span></div>
+                            <div class="text-sm text-gray-600">意願 <span class="font-bold text-blue-600">60%</span></div>
+                            <div class="text-sm text-gray-600">能力 <span class="font-bold text-blue-600">80%</span></div>
                             <div class="text-xs bg-blue-100 rounded px-2 py-1">能力超越意願</div>
                         </div>
                     </div>
                     <div class="bg-purple-50 p-4 rounded-xl border border-purple-200 text-center">
                         <h5 class="font-bold text-purple-700 mb-2">50歲以上</h5>
                         <div class="space-y-2">
-                            <div class="text-sm text-gray-600">意願 <span class="font-bold text-purple-600">40%</span></div>
-                            <div class="text-sm text-gray-600">能力 <span class="font-bold text-purple-600">60%</span></div>
+                            <div class="text-sm text-gray-600">意願 <span class="font-bold text-purple-600">50%</span></div>
+                            <div class="text-sm text-gray-600">能力 <span class="font-bold text-purple-600">70%</span></div>
                             <div class="text-xs bg-purple-100 rounded px-2 py-1">意願持續下降</div>
                         </div>
                     </div>
@@ -465,7 +483,7 @@
                 <!-- 學術研究來源 -->
                 <div class="text-center bg-gray-100 rounded-xl p-4">
                     <p class="text-sm text-gray-600">
-                        <strong>研究來源：</strong>碩士論文《影響壽險保戶購買長期照護險決策因素之研究-以南部地區為例》
+                        <strong>研究來源：</strong></br>王婷藝（2015）。影響壽險保戶購買長期照護險決策因素之研究：以南部地區為例（碩士論文）。義守大學管理學院管理碩士在職專班。
                     </p>
                     <p class="text-xs text-gray-500 mt-1">
                         此一矛盾揭示了意願與能力之間的斷層，突顯保險業在產品創新與市場策略上面臨的挑戰
@@ -960,7 +978,7 @@ function renderYouthChart() {
                         afterBody: function(tooltipItems) {
                             const item = tooltipItems[0];
                             if (item.label === '20-29歲') {
-                                return ['', '落差: 50% (意願 - 能力)', '⚠️ 保險業核心挑戰'];
+                                return ['', '落差: 55% (意願 - 能力)', '⚠️ 保險業核心挑戰'];
                             }
                             return '';
                         }
@@ -1353,6 +1371,192 @@ function startCycleAnimation(){
             });
         }
     });
+
+    // 在現有的script標籤中，更新以下JavaScript部分
+
+// 圖表實例管理
+const chartInstances = {};
+
+// 銷毀圖表函數
+function destroyChart(id) {
+    if (chartInstances[id]) {
+        chartInstances[id].destroy();
+        delete chartInstances[id];
+    }
+}
+
+// 渲染年輕世代圖表的主要函數
+function renderYouthChart() {
+    destroyChart('youthChart');
+    const ctx = document.getElementById('youthChart')?.getContext('2d');
+    if(!ctx) return;
+    
+    chartInstances['youthChart'] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['20-29歲', '30-39歲', '40-49歲', '50歲以上'],
+            datasets: [{
+                label: '購買意願', 
+                data: [85, 75, 60, 50],
+                backgroundColor: 'rgba(5, 150, 105, 0.7)',
+                borderColor: 'rgba(5, 150, 105, 1)',
+                borderWidth: 1
+            }, {
+                label: '購買能力 (相對)', 
+                data: [30, 60, 80, 70],
+                backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                borderColor: 'rgba(245, 158, 11, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true, 
+            maintainAspectRatio: false,
+            scales: { 
+                y: { 
+                    beginAtZero: true, 
+                    max: 100, 
+                    ticks: { 
+                        callback: (value) => value + '%' 
+                    },
+                    title: {
+                        display: true,
+                        text: '百分比 (%)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: '年齡層'
+                    }
+                }
+            },
+            plugins: { 
+                legend: { 
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                }, 
+                title: { 
+                    display: true, 
+                    text: '年輕族群購買意願 vs. 購買能力',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.dataset.label;
+                            const value = context.parsed.y;
+                            const ageGroup = context.label;
+                            
+                            if (ageGroup === '20-29歲') {
+                                if (label === '購買意願') {
+                                    return `${label}: ${value}% (最高)`;
+                                } else {
+                                    return `${label}: ${value}% (最低)`;
+                                }
+                            }
+                            return `${label}: ${value}%`;
+                        }
+                    }
+                }
+            },
+            animation: { 
+                duration: 1500, 
+                easing: 'easeInOutQuad' 
+            }
+        }
+    });
+}
+
+// 主要的動畫觸發邏輯
+function runAnimationForSection(id) {
+    switch(id) {
+        case 'youth-dilemma': 
+            renderYouthChart(); 
+            break;
+        case 'problem':
+            renderAgingChart();
+            break;
+        case 'unhealthy-expectancy':
+            startLifeExpectancyAnimation();
+            break;
+        case 'vicious-cycle':
+            startCycleAnimation();
+            break;
+        case 'solution':
+            startSolutionAnimation();
+            break;
+        case 'benefits':
+            switchTab('user');
+            break;
+        case 'vision':
+            renderFinalCycle();
+            break;
+    }
+}
+
+// 更新現有的 DOMContentLoaded 事件監聽器
+document.addEventListener('DOMContentLoaded', () => {
+    
+    let agingChartInstance = null;
+    let userChartInstance = null;
+    let cathayChartInstance = null;
+
+    const sections = document.querySelectorAll('section');
+    const navContainer = document.getElementById('side-nav');
+    const navDots = [];
+
+    sections.forEach(section => {
+        const dot = document.createElement('div');
+        dot.classList.add('nav-dot');
+        dot.dataset.section = section.id;
+        dot.setAttribute('title', section.id);
+        dot.addEventListener('click', () => {
+            section.scrollIntoView({ behavior: 'smooth' });
+        });
+        navContainer.appendChild(dot);
+        navDots.push(dot);
+    });
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.4
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const animatedElement = entry.target.querySelector('.fade-in') || entry.target;
+                animatedElement.classList.add('is-visible');
+                
+                const activeDot = navContainer.querySelector(`[data-section="${entry.target.id}"]`);
+                navDots.forEach(d => d.classList.remove('active'));
+                if(activeDot) activeDot.classList.add('active');
+
+                const id = entry.target.id;
+                
+                // 只在第一次渲染時執行動畫
+                if (!entry.target.dataset.rendered) {
+                    runAnimationForSection(id);
+                    entry.target.dataset.rendered = true;
+                }
+            }
+        });
+    }, observerOptions);
+    
+    // 觀察所有 section
+    sections.forEach(el => observer.observe(el));
+
+    // 其他現有的函數保持不變...
+    // [保留所有其他現有的函數，如 renderAgingChart, startLifeExpectancyAnimation 等]
+});
     </script>
 </body>
 </html>
