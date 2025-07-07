@@ -1736,5 +1736,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // [保留所有其他現有的函數，如 renderAgingChart, startLifeExpectancyAnimation 等]
 });
     </script>
+    <script>
+      window.onload = function() {
+        window.dispatchEvent(new Event('resize'));
+        if (typeof renderYouthChart === 'function') renderYouthChart();
+        if (typeof positionNodes === 'function') positionNodes();
+        if (typeof startLifeExpectancyAnimation === 'function') startLifeExpectancyAnimation();
+      };
+    </script>
 </body>
 </html>
