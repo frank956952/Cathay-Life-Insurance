@@ -354,6 +354,42 @@
     background-color: #d1d5db;
     border-radius: 2px;
 }
+
+@media (max-width: 640px) {
+  .chart-container {
+    height: 220px !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    padding: 0 !important;
+  }
+  #youthChart {
+    width: 100% !important;
+    max-width: 350px !important;
+    height: 220px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .chart-container {
+    height: 180px !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+    margin: 0 !important;
+  }
+  #youthChart {
+    min-width: 240px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: 180px !important;
+    display: block;
+  }
+  .grid {
+    gap: 0.5rem !important;
+    padding: 0 !important;
+  }
+}
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -459,7 +495,7 @@
 </section>
 
 <!-- 4. 年輕世代的兩難 -->
-<section id="youth-dilemma" class="section-wrapper">
+<section id="youth-dilemma" class="section-wrapper min-h-[500px] py-12">
     <div class="w-full max-w-5xl">
         <div class="fade-in">
             <p class="text-green-600 font-semibold mb-2">年輕世代的兩難</p>
@@ -477,7 +513,7 @@
                     </p>
                 </div>
             <!-- 圖表與統計數據 -->    
-<div class="grid md:grid-cols-2 gap-8 items-center mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-8">
     <div class="text-left">
         <div class="flex justify-center">
             <h4 class="text-xl font-bold text-gray-800 mb-4 text-center">研究發現：意願與能力的巨大落差</h4>
@@ -519,8 +555,10 @@
             </div>
         </div>
     </div>
-    <div class="chart-container">
-        <canvas id="youthChart"></canvas>
+    <div class="chart-container w-full max-w-full min-w-0 overflow-x-auto h-56 sm:h-72 md:h-80 flex items-center justify-center">
+      <div style="min-width:240px;width:100%;max-width:350px;display:flex;justify-content:center;">
+        <canvas id="youthChart" width="320" height="180" style="width:100%;height:180px;min-width:240px;max-width:350px;"></canvas>
+      </div>
     </div>
 </div>
                 
@@ -957,11 +995,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 更新的 Youth Chart 渲染函數
 function renderYouthChart() {
-    // 清除現有圖表
-    if (youthChartInstance) {
-        youthChartInstance.destroy();
-        youthChartInstance = null;
-    }
+    // // 清除現有圖表
+    // if (youthChartInstance) {
+    //     youthChartInstance.destroy();
+    //     youthChartInstance = null;
+    // }
     
     const ctx = document.getElementById('youthChart');
     if (!ctx) return;
@@ -1129,7 +1167,7 @@ function setupYouthDilemmaObserver() {
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.3 // 降低threshold以更早觸發
+        threshold: 0.1 // 降低threshold以更早觸發
     };
 
     const observer = new IntersectionObserver((entries) => {
