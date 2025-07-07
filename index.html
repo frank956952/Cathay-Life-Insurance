@@ -44,11 +44,7 @@
         .apple-card {
             @apply bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-lg transition-all duration-300;
         }
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
+        .fade-in { opacity: 1 !important; transform: none !important; }
         .is-visible {
             opacity: 1;
             transform: translateY(0);
@@ -1738,10 +1734,12 @@ document.addEventListener('DOMContentLoaded', () => {
     </script>
     <script>
       window.onload = function() {
-        window.dispatchEvent(new Event('resize'));
-        if (typeof renderYouthChart === 'function') renderYouthChart();
-        if (typeof positionNodes === 'function') positionNodes();
-        if (typeof startLifeExpectancyAnimation === 'function') startLifeExpectancyAnimation();
+        setTimeout(function() {
+          window.dispatchEvent(new Event('resize'));
+          if (typeof renderYouthChart === 'function') renderYouthChart();
+          if (typeof positionNodes === 'function') positionNodes();
+          if (typeof startLifeExpectancyAnimation === 'function') startLifeExpectancyAnimation();
+        }, 300);
       };
     </script>
 </body>
